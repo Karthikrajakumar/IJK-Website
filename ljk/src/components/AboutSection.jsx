@@ -1,5 +1,5 @@
 import React from "react";
-import aboutImage from "../assets/about-image.png";
+
 import { Container } from "./Container";
 
 // About section with image and text
@@ -8,7 +8,7 @@ export const AboutSection = () => {
     <section id="ideology" className="section about" aria-labelledby="about-title">
       <Container className="section-grid">
         <div className="card-image">
-          <img src={aboutImage} alt="Community outreach" />
+          <img src="https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801221/about-image_dbgoid.png" alt="Community outreach" />
         </div>
         <div className="section-text">
           <h2 id="about-title" className="section-title">

@@ -116,31 +116,6 @@ export const MembershipPage = () => {
                 <input type="text" placeholder="Enter your Name (as per Voter ID)" />
               </label>
               <label className="raise-field">
-                <span>Date of Birth</span>
-                <input
-                  type="date"
-                  onClick={(event) => event.currentTarget.showPicker?.()}
-                />
-              </label>
-              <fieldset className="raise-field gender">
-                <span>Gender</span>
-                <div className="gender-options">
-                  <label>
-                    <input type="radio" name="gender" value="female" /> Female
-                  </label>
-                  <label>
-                    <input type="radio" name="gender" value="male" /> Male
-                  </label>
-                  <label>
-                    <input type="radio" name="gender" value="other" /> Other
-                  </label>
-                </div>
-              </fieldset>
-              <label className="raise-field">
-                <span>Email</span>
-                <input type="email" placeholder="Enter your email address" />
-              </label>
-              <label className="raise-field">
                 <span>Mobile Number</span>
                 <input
                   type="tel"
@@ -164,6 +139,38 @@ export const MembershipPage = () => {
                 </span>
               </div>
               {otpError && <p className="raise-otp-error">{otpError}</p>}
+              <label className="raise-field">
+                <span>Date of Birth</span>
+                <input
+                  type="date"
+                  onClick={(event) => event.currentTarget.showPicker?.()}
+                />
+              </label>
+              <fieldset className="raise-field gender">
+                <span>Gender</span>
+                <div className="gender-options">
+                  <label>
+                    <input type="radio" name="gender" value="female" /> Female
+                  </label>
+                  <label>
+                    <input type="radio" name="gender" value="male" /> Male
+                  </label>
+                  <label>
+                    <input type="radio" name="gender" value="other" /> Other
+                  </label>
+                </div>
+              </fieldset>
+              <div className="raise-field split">
+                <label className="raise-field">
+                  <span>Email</span>
+                  <input type="email" placeholder="Enter your email address" />
+                </label>
+                <label className="raise-field">
+                  <span>Photo</span>
+                  <input type="file" accept="image/*" />
+                  <small>Upload photo (Max 10MB)</small>
+                </label>
+              </div>
               <label className="raise-field select">
                 <span>Constituency</span>
                 <select>
@@ -214,7 +221,11 @@ export const MembershipPage = () => {
                   <option>Run for a party position</option>
                 </select>
               </label>
-              <button className="raise-action raise-otp-button" type="button">
+              <button
+                className="raise-action raise-otp-button"
+                type="button"
+                disabled={!otpVerified}
+              >
                 GENERATE MY MEMBERSHIP CARD
               </button>
             </form>

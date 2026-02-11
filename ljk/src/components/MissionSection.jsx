@@ -1,5 +1,5 @@
 import React from "react";
-import emblem from "../assets/mission-emblem.png";
+
 import { Container } from "./Container";
 
 // Mission section with emblem illustration
@@ -18,7 +18,7 @@ export const MissionSection = () => {
           
         </div>
         <div className="card-image emblem">
-          <img src={emblem} alt="Party emblem" />
+          <img src="https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801230/mission-emblem_w3fva7.png" alt="Party emblem" />
         </div>
       </Container>
     </section>

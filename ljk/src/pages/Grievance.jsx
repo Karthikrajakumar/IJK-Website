@@ -24,9 +24,9 @@ export const GrievancePage = () => {
               <NavLink className="grievance-button primary" to="/grievance/raise-issue">
                 Raise an Issue
               </NavLink>
-              <button className="grievance-button outline" type="button">
+              <NavLink className="grievance-button outline" to="/grievance/track-issue">
                 Track your Issue
-              </button>
+              </NavLink>
             </div>
           </Container>
         </section>
