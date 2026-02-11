@@ -12,7 +12,7 @@ export const Home = () => {
   return (
     <>
       <Navbar />
-      <main>
+      <main className="home-page">
         <Hero />
         <AboutSection />
         <MissionSection />

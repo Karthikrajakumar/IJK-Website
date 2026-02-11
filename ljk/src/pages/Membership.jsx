@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { Container } from "../components/Container";
@@ -6,6 +6,77 @@ import { Box } from "../components/Box";
 import leaderPortrait from "../assets/grp5.png";
 
 export const MembershipPage = () => {
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [mobile, setMobile] = useState("");
+  const [otpStatus, setOtpStatus] = useState("idle");
+  const [otpError, setOtpError] = useState("");
+
+  useEffect(() => {
+    if (window.initSendOTP || customElements.get("h-captcha")) {
+      return;
+    }
+    const scriptUrls = [
+      "https://verify.msg91.com/otp-provider.js",
+      "https://verify.phone91.com/otp-provider.js",
+    ];
+    let index = 0;
+
+    const attemptLoad = () => {
+      if (index >= scriptUrls.length) return;
+      if (document.querySelector(`script[src="${scriptUrls[index]}"]`)) {
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = scriptUrls[index];
+      script.async = true;
+      script.onload = () => {};
+      script.onerror = () => {
+        index += 1;
+        attemptLoad();
+      };
+      document.head.appendChild(script);
+    };
+
+    attemptLoad();
+  }, []);
+
+  const sendOtp = () => {
+    setOtpError("");
+    setOtpVerified(false);
+    const trimmed = mobile.replace(/\D/g, "");
+
+    if (!trimmed || trimmed.length !== 10) {
+      setOtpError("Enter a valid 10-digit mobile number.");
+      setOtpStatus("error");
+      return;
+    }
+
+    if (typeof window.initSendOTP !== "function") {
+      setOtpError("OTP service is not available right now. Please try again.");
+      setOtpStatus("error");
+      return;
+    }
+
+    setOtpStatus("sending");
+
+    const configuration = {
+      widgetId: "36626a67706c333432373235",
+      tokenAuth: "493421TbeXBwrq3J698add0fP1",
+      identifier: `91${trimmed}`,
+      success: () => {
+        setOtpVerified(true);
+        setOtpStatus("verified");
+      },
+      failure: () => {
+        setOtpVerified(false);
+        setOtpStatus("error");
+        setOtpError("OTP verification failed. Please try again.");
+      },
+    };
+
+    window.initSendOTP(configuration);
+  };
+
   return (
     <>
       <Navbar />
@@ -45,17 +116,40 @@ export const MembershipPage = () => {
                 <input type="text" placeholder="Short answer text" />
               </label>
               <label className="raise-field">
+                <span>Date of Birth</span>
+                <input
+                  type="date"
+                  onClick={(event) => event.currentTarget.showPicker?.()}
+                />
+              </label>
+              <label className="raise-field">
                 <span>Email</span>
                 <input type="email" placeholder="Short answer text" />
               </label>
               <label className="raise-field">
                 <span>Mobile Number</span>
-                <input type="tel" placeholder="Short answer text" />
+                <input
+                  type="tel"
+                  placeholder="Short answer text"
+                  value={mobile}
+                  onChange={(event) => setMobile(event.target.value)}
+                />
               </label>
-              <label className="raise-field">
-                <span>OTP Code</span>
-                <input type="text" placeholder="Short answer text" />
-              </label>
+              <div className="raise-otp">
+                <button
+                  type="button"
+                  className="raise-otp-button"
+                  onClick={sendOtp}
+                  disabled={otpStatus === "sending"}
+                >
+                  {otpStatus === "sending" ? "Sending..." : "Send OTP"}
+                </button>
+                <span className={`raise-otp-status ${otpVerified ? "is-verified" : ""}`}>
+                  <span className="otp-indicator" aria-hidden="true" />
+                  {otpVerified ? "OTP verified" : "OTP not verified"}
+                </span>
+              </div>
+              {otpError && <p className="raise-otp-error">{otpError}</p>}
               <div className="raise-field split">
                 <label className="raise-field">
                   <span>Constituency</span>

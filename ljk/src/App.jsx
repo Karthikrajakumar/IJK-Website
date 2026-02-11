@@ -1,11 +1,11 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { IdeologyPage } from "./pages/Ideology";
 import { GrievancePage } from "./pages/Grievance";
 import { RaiseIssuePage } from "./pages/RaiseIssue";
 import { MembershipPage } from "./pages/Membership";
-import { NewsPage } from "./pages/News";
+import { ServicesPage } from "./pages/Services";
 
 function App() {
   return (
@@ -17,7 +17,9 @@ function App() {
           <Route path="/grievance" element={<GrievancePage />} />
           <Route path="/grievance/raise-issue" element={<RaiseIssuePage />} />
           <Route path="/membership" element={<MembershipPage />} />
-          <Route path="/news" element={<NewsPage />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/news" element={<Navigate to="/services" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
     </BrowserRouter>
@@ -25,3 +27,4 @@ function App() {
 }
 
 export default App;
+

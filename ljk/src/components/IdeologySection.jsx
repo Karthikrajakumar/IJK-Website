@@ -7,6 +7,7 @@ import scheme3 from "../assets/SCHEM 3.png";
 import scheme4 from "../assets/SCHEM 4.png";
 import scheme5 from "../assets/SCHEM 5.png";
 import scheme6 from "../assets/SCHEM 6.png";
+import lionPic from "../assets/lion-pic.png";
 import leaderWithFlag from "../assets/leader-with-flag.png";
 
 const schemes = [
@@ -257,8 +258,13 @@ export const IdeologySection = () => {
                 <span className="pledge-bold">— Jose Charles Martin</span>
               </p>
             </div>
-            <div className="leader-pledge-image">
-              <img src={leaderWithFlag} alt="Leader holding the LJK flag" loading="lazy" />
+            <div className="leader-pledge-media">
+              <div className="leader-pledge-lion">
+                <img src={lionPic} alt="Lion statue" loading="lazy" />
+              </div>
+              <div className="leader-pledge-image">
+                <img src={leaderWithFlag} alt="Leader holding the LJK flag" loading="lazy" />
+              </div>
             </div>
           </div>
         </Container>

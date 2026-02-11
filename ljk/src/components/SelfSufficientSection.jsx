@@ -1,6 +1,6 @@
 import React from "react";
 
-import sectionGif from "../assets/Gif.gif";
+
 import { Container } from "./Container";
 
 // Self-sufficient section with headline and image
@@ -20,7 +20,14 @@ export const SelfSufficientSection = () => {
         </div>
         
         <div className="self-gif">
-          <img src={sectionGif} alt="Puducherry progress animation" />
+          <video
+            src="https://res.cloudinary.com/dot0wbsfv/video/upload/v1770801229/Gif_wbhrjc.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            aria-label="Puducherry progress animation"
+          />
         </div>
       </Container>
     </section>
