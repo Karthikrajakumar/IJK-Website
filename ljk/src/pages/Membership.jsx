@@ -214,7 +214,7 @@ export const MembershipPage = () => {
                   <option>Run for a party position</option>
                 </select>
               </label>
-              <button className="raise-action" type="button">
+              <button className="raise-action raise-otp-button" type="button">
                 GENERATE MY MEMBERSHIP CARD
               </button>
             </form>
