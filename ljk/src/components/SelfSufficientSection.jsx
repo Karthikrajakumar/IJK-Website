@@ -25,6 +25,7 @@ This is not a vague dream. To ensure this becomes reality, our leader has alread
         <div className="self-gif">
           <video
             className="self-video"
+            data-autoplay="true"
             autoPlay
             loop
             muted
