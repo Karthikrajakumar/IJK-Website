@@ -19,6 +19,7 @@ export const MembershipPage = () => {
     name: "",
     dob: "",
     gender: "",
+    voterId: "",
     email: "",
     constituency: "",
     boothNumber: "",
@@ -108,6 +109,7 @@ export const MembershipPage = () => {
     if (!otpVerified)                errors.otp          = "Please verify your mobile number via OTP.";
     if (!formData.dob)               errors.dob          = "Date of birth is required.";
     if (!formData.gender)            errors.gender       = "Please select a gender.";
+    if (!formData.voterId.trim())    errors.voterId      = "Voter ID is required.";
     if (!formData.email.trim())      errors.email        = "Email is required.";
     if (!formData.photoPreview)      errors.photo        = "Please upload a photo.";
     if (!formData.constituency)      errors.constituency = "Please select a constituency.";
@@ -275,6 +277,7 @@ export const MembershipPage = () => {
                 <input
                   type="text"
                   placeholder="Enter your Name (as per Voter ID)"
+                  required
                   value={formData.name}
                   onChange={(e) => {
                     setFormData((p) => ({ ...p, name: e.target.value }));
@@ -291,6 +294,7 @@ export const MembershipPage = () => {
                 <input
                   type="tel"
                   placeholder="Enter your mobile number"
+                  required
                   value={mobile}
                   onChange={(e) => {
                     setMobile(e.target.value);
@@ -326,6 +330,7 @@ export const MembershipPage = () => {
                 <span>Date of Birth <span className="required-star">*</span></span>
                 <input
                   type="date"
+                  required
                   value={formData.dob}
                   onChange={(e) => {
                     setFormData((p) => ({ ...p, dob: e.target.value }));
@@ -350,6 +355,7 @@ export const MembershipPage = () => {
                         type="radio"
                         name="gender"
                         value={g}
+                        required
                         checked={formData.gender === g}
                         onChange={(e) => {
                           setFormData((p) => ({ ...p, gender: e.target.value }));
@@ -363,6 +369,23 @@ export const MembershipPage = () => {
                 <FieldError name="gender" />
               </fieldset>
 
+              {/* Voter ID */}
+              <label className="raise-field" id="field-voterId">
+                <span>Voter ID <span className="required-star">*</span></span>
+                <input
+                  type="text"
+                  placeholder="Enter your Voter ID"
+                  required
+                  value={formData.voterId}
+                  onChange={(e) => {
+                    setFormData((p) => ({ ...p, voterId: e.target.value }));
+                    setFormErrors((p) => ({ ...p, voterId: "" }));
+                  }}
+                  className={formErrors.voterId ? "input-error" : ""}
+                />
+                <FieldError name="voterId" />
+              </label>
+
               {/* Email + Photo */}
               <div className="raise-field split">
                 <label className="raise-field" id="field-email">
@@ -370,6 +393,7 @@ export const MembershipPage = () => {
                   <input
                     type="email"
                     placeholder="Enter your email address"
+                    required
                     value={formData.email}
                     onChange={(e) => {
                       setFormData((p) => ({ ...p, email: e.target.value }));
@@ -384,6 +408,7 @@ export const MembershipPage = () => {
                   <input
                     type="file"
                     accept="image/*"
+                    required
                     onChange={handlePhotoChange}
                     className={formErrors.photo ? "input-error" : ""}
                   />
@@ -396,6 +421,7 @@ export const MembershipPage = () => {
               <label className="raise-field select" id="field-constituency">
                 <span>Constituency <span className="required-star">*</span></span>
                 <select
+                  required
                   value={formData.constituency}
                   onChange={(e) => {
                     setFormData((p) => ({ ...p, constituency: e.target.value }));
@@ -424,6 +450,7 @@ export const MembershipPage = () => {
                 <input
                   type="text"
                   placeholder="Enter your booth number"
+                  required
                   value={formData.boothNumber}
                   onChange={(e) => {
                     setFormData((p) => ({ ...p, boothNumber: e.target.value }));
@@ -438,6 +465,7 @@ export const MembershipPage = () => {
               <label className="raise-field select" id="field-commitment">
                 <span>Commitment Level <span className="required-star">*</span></span>
                 <select
+                  required
                   value={formData.commitment}
                   onChange={(e) => {
                     setFormData((p) => ({ ...p, commitment: e.target.value }));

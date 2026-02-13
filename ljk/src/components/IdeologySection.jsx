@@ -152,11 +152,14 @@ export const IdeologySection = () => {
     const allowAmountHighlight =
       schemeTitle === "Dharmambal Livelihood Development Scheme" ||
       schemeTitle === "Maniammai Self-Respect Scheme" ||
-      schemeTitle === "Saraswathi Subbiah Rights Scheme";
+      schemeTitle === "Saraswathi Subbiah Rights Scheme" ||
+      schemeTitle === "Avvaiyar Governance Scheme";
     const specialPhraseRegex =
       schemeTitle === "Maniammai Self-Respect Scheme" ||
       schemeTitle === "Saraswathi Subbiah Rights Scheme"
         ? /₹1 Lakh plus 10 grams|₹60,000|60,000|60000|₹10 Lakhs|10 Lakhs|10 lakhs/gi
+        : schemeTitle === "Avvaiyar Governance Scheme"
+        ? /\d+%\s+reservation/gi
         : null;
 
     if (separatorIndex !== -1) {
