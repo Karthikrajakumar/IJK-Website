@@ -2,7 +2,7 @@ import React from "react";
 
 
 import { Container } from "./Container";
-import animationGif from "../assets/vid.gif"
+import animationGif from "../assets/Gif.mp4";
 
 // Self-sufficient section with headline and image
 export const SelfSufficientSection = () => {
@@ -23,13 +23,18 @@ This is not a vague dream. To ensure this becomes reality, our leader has alread
         </div>
         
         <div className="self-gif">
-           <img
-           style={{
-            
-           }}
-    src={animationGif}
-    alt="Puducherry progress animation"
-  />
+          <video
+            className="self-video"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            disablePictureInPicture
+            aria-label="Puducherry progress animation"
+          >
+            <source src={animationGif} type="video/mp4" />
+          </video>
         </div>
       </Container>
     </section>
