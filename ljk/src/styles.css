@@ -189,9 +189,9 @@ main {
   gap: 50px;
   margin: 0 auto;
   padding: 14px 0;
-  width: min(1420px, 122%);
+  width: min(1420px, 100%);
+  margin: 0 auto;
   
-
 
 }
 
@@ -558,7 +558,7 @@ section.self-sufficient{
 .self-gif img,
 .self-gif video {
   width: 100%;
-  height: auto;
+  height: 0 auto;
   display: block;
 }
 
@@ -954,7 +954,7 @@ padding-bottom: 170px;
   width: 100%;
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 14px;
 }
 
@@ -962,6 +962,7 @@ padding-bottom: 170px;
   width: min(460px, 80vw);
   height: auto;
   align-self: flex-end;
+  margin-left: auto;
   
 }
 
@@ -969,7 +970,7 @@ padding-bottom: 170px;
   width: 100%;
   height: auto;
   display: block;
-  transform: translateY(40px);
+  transform: translateY(40px) scaleX(-1);
   
 }
 
@@ -1153,7 +1154,7 @@ padding-bottom: 170px;
 
   .leader-pledge-media {
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: flex-end;
     gap: 10px;
   }
@@ -1351,7 +1352,7 @@ padding-bottom: 170px;
 .services-feed-inner {
   display: flex;
   flex-direction: column;
-  gap: 52px;
+  gap: 62px;
 }
 
 .services-story {
@@ -2101,17 +2102,18 @@ padding-bottom: 170px;
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
-  min-height: 260px;
+  min-height: 360px;
   padding-right: 24px;
 }
 
 .raise-hero-media img {
-  width: min(580px, 140vw);
+  width: min(580px, 200vw);
   height: auto;
   display: block;
   position: relative;
   z-index: 2;
   transform: translateY(147px);
+  right: 50px;
 }
 
 .raise-hero-glow {
@@ -2121,7 +2123,7 @@ padding-bottom: 170px;
   border-radius: 50%;
   background: #e2a713;
   right: 72px;
-  bottom: -296px;
+  bottom: -290px;
   z-index: 1;
 }
 
