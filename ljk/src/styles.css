@@ -902,7 +902,7 @@ padding-bottom: 170px;
 }
 
 .scheme-accent.accent-gold {
-  color: #0a2d52;
+  color: #e3a713;
 }
 
 .scheme-accent.accent-red {
@@ -2068,7 +2068,7 @@ padding-bottom: 170px;
 .raise-hero {
   background: linear-gradient(180deg, #000000 0%, #043a6e 100%);
   color: #ffffff;
-  padding: 110px 0 90px;
+  padding: 20px 0 90px;
   overflow: hidden;
 }
 
@@ -2108,7 +2108,7 @@ padding-bottom: 170px;
 
 .raise-hero-media img {
   width: min(580px, 200vw);
-  height: auto;
+  height: 80px auto;
   display: block;
   position: relative;
   z-index: 2;
