@@ -205,10 +205,12 @@ export const RaiseIssuePage = () => {
               <div className="raise-group">
                 <h3>Field 3: The Issue</h3>
                 <label className="raise-field select">
-                  <span>Describe the isue</span>
-                   <input
+                  <span>Describe the issue</span>
+                  <input
                     type="text"
                     placeholder="Enter the issue category (e.g. Water Supply, Street Lights, etc.)"
+                    value={category}
+                    onChange={(event) => setCategory(event.target.value)}
                     disabled={!otpVerified}
                   />
                   {/* <select
