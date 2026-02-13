@@ -9,7 +9,7 @@ export const TrackIssuePage = () => {
     "Received",
     "Under Review",
     "Assigned to Booth Agent",
-    "Escalated to Leader",
+ 
     "Resolved",
   ];
   const [showStatus, setShowStatus] = useState(false);

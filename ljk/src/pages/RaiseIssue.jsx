@@ -205,8 +205,13 @@ export const RaiseIssuePage = () => {
               <div className="raise-group">
                 <h3>Field 3: The Issue</h3>
                 <label className="raise-field select">
-                  <span>Category</span>
-                  <select
+                  <span>Describe the isue</span>
+                   <input
+                    type="text"
+                    placeholder="Enter the issue category (e.g. Water Supply, Street Lights, etc.)"
+                    disabled={!otpVerified}
+                  />
+                  {/* <select
                     value={category}
                     onChange={(event) => setCategory(event.target.value)}
                     disabled={!otpVerified}
@@ -221,7 +226,7 @@ export const RaiseIssuePage = () => {
                     <option value="Education">Education</option>
                     <option value="Police/Safety">Police/Safety</option>
                     <option value="Other">Other</option>
-                  </select>
+                  </select> */}
                 </label>
                 {category === "Other" && (
                   <label className="raise-field">

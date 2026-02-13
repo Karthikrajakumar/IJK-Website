@@ -91,3 +91,6 @@
   -webkit-appearance: auto; /* For WebKit browsers */
   -moz-appearance: auto; /* For Firefox */
 }
+.required-star {
+  color: red !important;
+}

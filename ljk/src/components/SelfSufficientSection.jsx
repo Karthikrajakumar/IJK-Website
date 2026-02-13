@@ -2,6 +2,7 @@ import React from "react";
 
 
 import { Container } from "./Container";
+import animationGif from "../assets/vid.gif"
 
 // Self-sufficient section with headline and image
 export const SelfSufficientSection = () => {
@@ -17,17 +18,18 @@ export const SelfSufficientSection = () => {
             infrastructure, economy, and standard of living to match global
             standards, inspired by the efficiency and prosperity of Singapore.
           </p>
+          <p className="self-subtitle" style={{justifyContent: "center"}}>
+This is not a vague dream. To ensure this becomes reality, our leader has already engaged a Singapore-based architectural and planning firm to design a future development roadmap. This master plan focuses on modern traffic management systems, strategic flyovers, and expanding coastal tourism to truly match global standards.          </p>
         </div>
         
         <div className="self-gif">
-          <video
-            src="https://res.cloudinary.com/dot0wbsfv/video/upload/v1770801229/Gif_wbhrjc.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            aria-label="Puducherry progress animation"
-          />
+           <img
+           style={{
+            
+           }}
+    src={animationGif}
+    alt="Puducherry progress animation"
+  />
         </div>
       </Container>
     </section>

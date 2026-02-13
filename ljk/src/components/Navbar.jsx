@@ -6,6 +6,8 @@ import { Container } from "./Container";
 // Sticky navigation with mobile toggle
 export const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [language, setLanguage] = useState("English");
+
   const navRef = useRef(null);
 
   const handleToggle = () => setOpen((prev) => !prev);
@@ -40,19 +42,7 @@ export const Navbar = () => {
         <NavLink to="/" className="nav-logo" aria-label="LJK Home" onClick={handleClose}>
           <img src={logo} alt="LJK logo" />
         </NavLink>
-
-        <button
-          className="nav-toggle"
-          type="button"
-          aria-label="Toggle navigation"
-          aria-expanded={open}
-          onClick={handleToggle}
-        >
-          <span className="nav-toggle-bar" />
-          <span className="nav-toggle-bar" />
-          <span className="nav-toggle-bar" />
-        </button>
-
+    
         <nav className={`nav-menu ${open ? "is-open" : ""}`}>
           <NavLink
             to="/"
@@ -90,6 +80,34 @@ export const Navbar = () => {
             Services
           </NavLink>
         </nav>
+          <div className="nav-sty" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+
+          
+        <button
+          className="nav-toggle"
+          type="button"
+          aria-label="Toggle navigation"
+          aria-expanded={open}
+          onClick={handleToggle}
+        >
+          <span className="nav-toggle-bar" />
+          <span className="nav-toggle-bar" />
+          <span className="nav-toggle-bar" />
+        </button>
+        <div className="nav-language">
+          <select
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            aria-label="Select Language"
+          >
+            <option value="English">English</option>
+            <option value="Tamil">Tamil</option>
+            
+          </select>
+        </div>
+        </div>
+
+
       </Container>
     </header>
   );
