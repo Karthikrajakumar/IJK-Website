@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd ljk && npm install && npm run build",
+  "outputDirectory": "ljk/build",
+  "installCommand": "cd ljk && npm install"
+}
