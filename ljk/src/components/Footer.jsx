@@ -1,17 +1,26 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Container } from "./Container";
+import { LanguageContext } from "../context/LanguageContext";
+import en from "../locales/en";
+import ta from "../locales/ta";
+
+const translations = {
+  English: en,
+  Tamil: ta,
+};
 
 // Footer aligned to the provided design
 export const Footer = () => {
+  const { language } = useContext(LanguageContext);
+  const t = translations[language] || translations.English;
+  const footer = t.footer || {};
+
   return (
     <footer id="services-footer" className="footer">
       <Container className="footer-frame">
-        <h2 className="footer-title">LATCHIYA JANANAYAGA KATCHI</h2>
-        <p className="footer-text">
-          Latchiya Jananayaga Katchi 191, Villianur Main Rd, Pavazha Nagar,
-          Reddiarpalayam, Puducherry - 605010
-        </p>
-        <div className="footer-socials" aria-label="Social media">
+        <h2 className="footer-title">{footer.title}</h2>
+        <p className="footer-text">{footer.address}</p>
+        <div className="footer-socials" aria-label={footer.socialLabel}>
           <a
             className="footer-icon"
             href="https://www.facebook.com/ljkpartyofficial"
@@ -57,9 +66,8 @@ export const Footer = () => {
             </svg>
           </a>
         </div>
-        <p className="footer-copy">© 2026 ljkofficial.com.All rights reserved</p>
+        <p className="footer-copy">{footer.copy}</p>
       </Container>
     </footer>
   );
 };
-

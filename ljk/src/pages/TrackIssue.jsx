@@ -1,17 +1,23 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { Container } from "../components/Container";
 import { Box } from "../components/Box";
+import { LanguageContext } from "../context/LanguageContext";
+import en from "../locales/en";
+import ta from "../locales/ta";
+
+const translations = {
+  English: en,
+  Tamil: ta,
+};
 
 export const TrackIssuePage = () => {
-  const statuses = [
-    "Received",
-    "Under Review",
-    "Assigned to Booth Agent",
- 
-    "Resolved",
-  ];
+  const { language } = useContext(LanguageContext);
+  const t = translations[language] || translations.English;
+  const track = t.trackIssuePage || {};
+
+  const statuses = track.statuses || [];
   const [showStatus, setShowStatus] = useState(false);
   const [grievanceId, setGrievanceId] = useState("");
   const [trackError, setTrackError] = useState("");
@@ -31,7 +37,7 @@ export const TrackIssuePage = () => {
     const trimmed = grievanceId.trim();
     if (!issuePattern.test(trimmed)) {
       setShowStatus(false);
-      setTrackError("Please enter the correct issue id");
+      setTrackError(track.errorInvalidId);
       return;
     }
     setTrackError("");
@@ -47,10 +53,10 @@ export const TrackIssuePage = () => {
             <Container>
               <div className="track-status-card">
                 <div className="track-status-header">
-                  <p className="track-status-title">Tracking ID</p>
-                  <p className="track-status-id">{grievanceId || "issue-222222"}</p>
+                  <p className="track-status-title">{track.trackingIdLabel}</p>
+                  <p className="track-status-id">{grievanceId || track.fieldPlaceholder}</p>
                   <p className="track-status-current">
-                    Current Status: <strong>{statuses[currentIndex]}</strong>
+                    {track.currentStatusLabel} <strong>{statuses[currentIndex]}</strong>
                   </p>
                 </div>
                 <div
@@ -84,22 +90,19 @@ export const TrackIssuePage = () => {
         <section className="track-hero" aria-labelledby="track-issue-title">
           <Container className="track-hero-inner">
             <div className="track-hero-copy">
-              <p className="track-eyebrow">Grievance Portal</p>
-              <h1 id="track-issue-title">Track Your Issue</h1>
-              <p className="track-hero-subtitle">
-                Use your grievance ID to see the exact stage of action. Every submission is
-                monitored by our booth teams and leadership until it is resolved.
-              </p>
+              <p className="track-eyebrow">{track.heroEyebrow}</p>
+              <h1 id="track-issue-title">{track.heroTitle}</h1>
+              <p className="track-hero-subtitle">{track.heroSubtitle}</p>
             </div>
             <aside className="track-widget" aria-label="Track your issue">
-              <span className="track-widget-label">Track Your Issue</span>
-              <h3 className="track-widget-title">Check Status</h3>
+              <span className="track-widget-label">{track.widgetLabel}</span>
+              <h3 className="track-widget-title">{track.widgetTitle}</h3>
               <label className="track-field">
-                <span>Enter Your Grievance ID</span>
+                <span>{track.fieldLabel}</span>
                 <input
                   className="track-input"
                   type="text"
-                  placeholder="issue-222222"
+                  placeholder={track.fieldPlaceholder}
                   inputMode="text"
                   value={grievanceId}
                   onChange={(event) => {
@@ -111,7 +114,7 @@ export const TrackIssuePage = () => {
               </label>
               {trackError && <p className="track-error">{trackError}</p>}
               <button className="track-button" type="button" onClick={handleTrack}>
-                Track
+                {track.trackButton}
               </button>
             </aside>
           </Container>
@@ -119,10 +122,7 @@ export const TrackIssuePage = () => {
 
         <section className="track-quote">
           <Container>
-            <blockquote>
-              "I am not here to rule; I am here to serve. Report your issue today, and let us build
-              a better Puducherry together." - Jose Charles Martin
-            </blockquote>
+            <blockquote>{track.quote}</blockquote>
           </Container>
         </section>
       </main>

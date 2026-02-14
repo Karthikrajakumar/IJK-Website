@@ -1,12 +1,28 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { Container } from "../components/Container";
 import { NavLink } from "react-router-dom";
 import { Box } from "../components/Box";
 import grievanceImage from "../assets/grievance-image.png";
+import { LanguageContext } from "../context/LanguageContext";
+import en from "../locales/en";
+import ta from "../locales/ta";
+
+const translations = {
+  English: en,
+  Tamil: ta,
+};
 
 export const GrievancePage = () => {
+  const { language } = useContext(LanguageContext);
+  const t = translations[language] || translations.English;
+  const grievance = t.grievancePage || {};
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -14,24 +30,21 @@ export const GrievancePage = () => {
         <section className="grievance-hero" aria-labelledby="grievance-title">
           <Container className="grievance-hero-inner">
             <h1 className="grievance-title" id="grievance-title">
-              YOUR VOICE, YOUR CONSTITUENCY, <span className="accent-red">YOUR SOLUTION</span>
+              {grievance.title1} <span className="accent-red">{grievance.title2}</span>
             </h1>
-            <p className="grievance-subtitle">
-              "Don't just live with the problem. Report it. Our team, led by JCM, is listening and
-              ready to act."
-            </p>
+            <p className="grievance-subtitle">{grievance.subtitle}</p>
             <div className="grievance-actions">
               <NavLink className="grievance-button primary" to="/grievance/raise-issue">
-                Raise an Issue
+                {grievance.raiseIssue}
               </NavLink>
               <NavLink className="grievance-button outline" to="/grievance/track-issue">
-                Track your Issue
+                {grievance.trackIssue}
               </NavLink>
             </div>
           </Container>
         </section>
         <section className="grievance-image-section">
-          <img src={grievanceImage} alt="LJK Leader with Party Flag" className="grievance-image" />
+          <img src={grievanceImage} alt={grievance.imageAlt} className="grievance-image" />
         </section>
       </main>
       <Box />

@@ -83,6 +83,23 @@ main {
   margin: 33px 0 ;
 }
 
+.lang-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.nav-language {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
 .section-title {
   font-size: clamp(1.8rem, 2vw + 1rem, 2.8rem);
   letter-spacing: 0.04em;
@@ -2202,7 +2219,7 @@ padding-bottom: 170px;
 
 .membership-hero-note {
   margin: 0;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.85);
 }
