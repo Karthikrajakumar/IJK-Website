@@ -8,7 +8,7 @@ import scheme4 from "../assets/SCHEM 4.png";
 import scheme5 from "../assets/SCHEM 5.png";
 import scheme6 from "../assets/SCHEM 6.png";
 import lionPic from "../assets/lion-pic.png";
-
+import leaderWithFlag from "../assets/leader-with-flag.png";
 
 const schemes = [
   {
@@ -152,14 +152,11 @@ export const IdeologySection = () => {
     const allowAmountHighlight =
       schemeTitle === "Dharmambal Livelihood Development Scheme" ||
       schemeTitle === "Maniammai Self-Respect Scheme" ||
-      schemeTitle === "Saraswathi Subbiah Rights Scheme" ||
-      schemeTitle === "Avvaiyar Governance Scheme";
+      schemeTitle === "Saraswathi Subbiah Rights Scheme";
     const specialPhraseRegex =
       schemeTitle === "Maniammai Self-Respect Scheme" ||
       schemeTitle === "Saraswathi Subbiah Rights Scheme"
         ? /₹1 Lakh plus 10 grams|₹60,000|60,000|60000|₹10 Lakhs|10 Lakhs|10 lakhs/gi
-        : schemeTitle === "Avvaiyar Governance Scheme"
-        ? /\d+%\s+reservation/gi
         : null;
 
     if (separatorIndex !== -1) {
@@ -265,7 +262,9 @@ export const IdeologySection = () => {
               <div className="leader-pledge-lion">
                 <img src={lionPic} alt="Lion statue" loading="lazy" />
               </div>
-              
+              <div className="leader-pledge-image">
+                <img src={leaderWithFlag} alt="Leader holding the LJK flag" loading="lazy" />
+              </div>
             </div>
           </div>
         </Container>

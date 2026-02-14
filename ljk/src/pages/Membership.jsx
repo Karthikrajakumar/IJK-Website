@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
@@ -14,18 +13,24 @@ export const MembershipPage = () => {
   const [otpError, setOtpError] = useState("");
   const [generating, setGenerating] = useState(false);
   const [formErrors, setFormErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
     dob: "",
     gender: "",
-    voterId: "",
     email: "",
     constituency: "",
     boothNumber: "",
+    voterId: "",        // Added
+    district: "",       // Added
+    address: "",        // Added
     commitment: "",
     photoPreview: null,
   });
+
+  // ── API Configuration ──────────────────────────────────────────────────────
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
   // ── Load MSG91 OTP script ──────────────────────────────────────────────────
   useEffect(() => {
@@ -80,6 +85,21 @@ export const MembershipPage = () => {
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+
+    // Validate file size (10MB max)
+    const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+    if (file.size > maxSize) {
+      setFormErrors((prev) => ({ ...prev, photo: "Photo size must be less than 10MB" }));
+      return;
+    }
+
+    // Validate file type
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
+      setFormErrors((prev) => ({ ...prev, photo: "Please upload a valid image (JPG, PNG, or WebP)" }));
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = (ev) => {
       setFormData((prev) => ({ ...prev, photoPreview: ev.target.result }));
@@ -109,13 +129,70 @@ export const MembershipPage = () => {
     if (!otpVerified)                errors.otp          = "Please verify your mobile number via OTP.";
     if (!formData.dob)               errors.dob          = "Date of birth is required.";
     if (!formData.gender)            errors.gender       = "Please select a gender.";
-    if (!formData.voterId.trim())    errors.voterId      = "Voter ID is required.";
     if (!formData.email.trim())      errors.email        = "Email is required.";
     if (!formData.photoPreview)      errors.photo        = "Please upload a photo.";
     if (!formData.constituency)      errors.constituency = "Please select a constituency.";
     if (!formData.boothNumber.trim()) errors.boothNumber = "Booth number is required.";
+    if (!formData.voterId.trim())    errors.voterId      = "Voter ID is required.";
     if (!formData.commitment)        errors.commitment   = "Please select a commitment level.";
     return errors;
+  };
+
+  // ── Submit membership to backend ───────────────────────────────────────────
+  const submitMembership = async () => {
+    const errors = validate();
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      const firstErrorKey = Object.keys(errors)[0];
+      const el = document.getElementById(`field-${firstErrorKey}`);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+      return null;
+    }
+
+    setFormErrors({});
+    setSubmitting(true);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/membership/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          mobileNumber: mobile,
+          constituency: formData.constituency,
+          district: formData.district || formData.constituency, // Use constituency if district not provided
+          address: formData.address,
+          otp: otpVerified, // Send boolean
+          age: parseInt(calcAge(formData.dob)),
+          voterId: formData.voterId,
+          photo: formData.photoPreview, // Send base64 photo to backend
+          // Additional fields
+          gender: formData.gender,
+          boothNumber: formData.boothNumber,
+          commitment: formData.commitment,
+          dob: formData.dob,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Registration failed");
+      }
+
+      // Return membershipId for PDF generation
+      return data.membershipId;
+
+    } catch (error) {
+      console.error("Membership submission error:", error);
+      alert(error.message || "Failed to register membership. Please try again.");
+      return null;
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   // ── Dynamically load jsPDF ─────────────────────────────────────────────────
@@ -130,18 +207,7 @@ export const MembershipPage = () => {
     });
 
   // ── Generate PDF membership card ───────────────────────────────────────────
-  const generateMembershipCard = async () => {
-    const errors = validate();
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      // Scroll to first error
-      const firstErrorKey = Object.keys(errors)[0];
-      const el = document.getElementById(`field-${firstErrorKey}`);
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
-      return;
-    }
-
-    setFormErrors({});
+  const generateMembershipCard = async (membershipId) => {
     setGenerating(true);
 
     try {
@@ -211,18 +277,38 @@ export const MembershipPage = () => {
 
       fields.forEach(({ value, y }) => ctx.fillText(value, VALUE_X, y));
 
+      // Add membership ID to the card if you want
+      if (membershipId) {
+        ctx.font = "bold 28px Arial";
+        ctx.fillText(`ID: ${membershipId}`, VALUE_X, 680);
+      }
+
       // ── 4. Export as PDF and trigger download ──────────────────────────────
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: "a5" });
       const imgData = canvas.toDataURL("image/jpeg", 1.0);
       pdf.addImage(imgData, "JPEG", 0, 0, 210, 148);
-      pdf.save(`LJK_Membership_${formData.name}.pdf`);
+      pdf.save(`LJK_Membership_${formData.name}_${membershipId || ""}.pdf`);
+
+      alert("Membership registered successfully! Your card has been downloaded.");
 
     } catch (err) {
       console.error("Card generation failed:", err);
-      alert("Failed to generate membership card. Please try again.");
+      alert("Membership registered, but card generation failed. Please contact support.");
     } finally {
       setGenerating(false);
+    }
+  };
+  
+
+  // ── Handle complete submission flow ────────────────────────────────────────
+  const handleSubmit = async () => {
+    // First submit to backend
+    const membershipId = await submitMembership();
+    
+    // If successful, generate PDF card
+    if (membershipId) {
+      await generateMembershipCard(membershipId);
     }
   };
 
@@ -277,7 +363,6 @@ export const MembershipPage = () => {
                 <input
                   type="text"
                   placeholder="Enter your Name (as per Voter ID)"
-                  required
                   value={formData.name}
                   onChange={(e) => {
                     setFormData((p) => ({ ...p, name: e.target.value }));
@@ -294,7 +379,6 @@ export const MembershipPage = () => {
                 <input
                   type="tel"
                   placeholder="Enter your mobile number"
-                  required
                   value={mobile}
                   onChange={(e) => {
                     setMobile(e.target.value);
@@ -314,8 +398,6 @@ export const MembershipPage = () => {
                   disabled={otpStatus === "sending"}
                 >
                   {otpStatus === "sending" ? "Sending..." : "Send OTP"}
-
-                
                 </button>
                 <span className={`raise-otp-status ${otpVerified ? "is-verified" : ""}`}>
                   <span className="otp-indicator" aria-hidden="true" />
@@ -330,7 +412,6 @@ export const MembershipPage = () => {
                 <span>Date of Birth <span className="required-star">*</span></span>
                 <input
                   type="date"
-                  required
                   value={formData.dob}
                   onChange={(e) => {
                     setFormData((p) => ({ ...p, dob: e.target.value }));
@@ -355,7 +436,6 @@ export const MembershipPage = () => {
                         type="radio"
                         name="gender"
                         value={g}
-                        required
                         checked={formData.gender === g}
                         onChange={(e) => {
                           setFormData((p) => ({ ...p, gender: e.target.value }));
@@ -369,23 +449,6 @@ export const MembershipPage = () => {
                 <FieldError name="gender" />
               </fieldset>
 
-              {/* Voter ID */}
-              <label className="raise-field" id="field-voterId">
-                <span>Voter ID <span className="required-star">*</span></span>
-                <input
-                  type="text"
-                  placeholder="Enter your Voter ID"
-                  required
-                  value={formData.voterId}
-                  onChange={(e) => {
-                    setFormData((p) => ({ ...p, voterId: e.target.value }));
-                    setFormErrors((p) => ({ ...p, voterId: "" }));
-                  }}
-                  className={formErrors.voterId ? "input-error" : ""}
-                />
-                <FieldError name="voterId" />
-              </label>
-
               {/* Email + Photo */}
               <div className="raise-field split">
                 <label className="raise-field" id="field-email">
@@ -393,7 +456,6 @@ export const MembershipPage = () => {
                   <input
                     type="email"
                     placeholder="Enter your email address"
-                    required
                     value={formData.email}
                     onChange={(e) => {
                       setFormData((p) => ({ ...p, email: e.target.value }));
@@ -408,20 +470,48 @@ export const MembershipPage = () => {
                   <input
                     type="file"
                     accept="image/*"
-                    required
                     onChange={handlePhotoChange}
                     className={formErrors.photo ? "input-error" : ""}
                   />
-                  <small>Upload photo (Max 10MB)</small>
+                  <small>Upload photo (Max 10MB, JPG/PNG/WebP)</small>
+                  {formData.photoPreview && (
+                    <div style={{ marginTop: '8px' }}>
+                      <img 
+                        src={formData.photoPreview} 
+                        alt="Preview" 
+                        style={{ 
+                          width: '100px', 
+                          height: '100px', 
+                          objectFit: 'cover',
+                          borderRadius: '4px'
+                        }} 
+                      />
+                    </div>
+                  )}
                   <FieldError name="photo" />
                 </label>
               </div>
+
+              {/* Voter ID */}
+              <label className="raise-field" id="field-voterId">
+                <span>Voter ID <span className="required-star">*</span></span>
+                <input
+                  type="text"
+                  placeholder="Enter your Voter ID number"
+                  value={formData.voterId}
+                  onChange={(e) => {
+                    setFormData((p) => ({ ...p, voterId: e.target.value }));
+                    setFormErrors((p) => ({ ...p, voterId: "" }));
+                  }}
+                  className={formErrors.voterId ? "input-error" : ""}
+                />
+                <FieldError name="voterId" />
+              </label>
 
               {/* Constituency */}
               <label className="raise-field select" id="field-constituency">
                 <span>Constituency <span className="required-star">*</span></span>
                 <select
-                  required
                   value={formData.constituency}
                   onChange={(e) => {
                     setFormData((p) => ({ ...p, constituency: e.target.value }));
@@ -444,13 +534,38 @@ export const MembershipPage = () => {
                 <FieldError name="constituency" />
               </label>
 
+              {/* District (Optional) */}
+              <label className="raise-field" id="field-district">
+                <span>District</span>
+                <input
+                  type="text"
+                  placeholder="Enter your district (optional)"
+                  value={formData.district}
+                  onChange={(e) => {
+                    setFormData((p) => ({ ...p, district: e.target.value }));
+                  }}
+                />
+              </label>
+
+              {/* Address (Optional) */}
+              <label className="raise-field" id="field-address">
+                <span>Address</span>
+                <textarea
+                  placeholder="Enter your address (optional)"
+                  value={formData.address}
+                  onChange={(e) => {
+                    setFormData((p) => ({ ...p, address: e.target.value }));
+                  }}
+                  rows="3"
+                />
+              </label>
+
               {/* Booth Number */}
               <label className="raise-field" id="field-boothNumber">
                 <span>Booth Number <span className="required-star">*</span></span>
                 <input
                   type="text"
                   placeholder="Enter your booth number"
-                  required
                   value={formData.boothNumber}
                   onChange={(e) => {
                     setFormData((p) => ({ ...p, boothNumber: e.target.value }));
@@ -465,7 +580,6 @@ export const MembershipPage = () => {
               <label className="raise-field select" id="field-commitment">
                 <span>Commitment Level <span className="required-star">*</span></span>
                 <select
-                  required
                   value={formData.commitment}
                   onChange={(e) => {
                     setFormData((p) => ({ ...p, commitment: e.target.value }));
@@ -486,10 +600,14 @@ export const MembershipPage = () => {
               <button
                 className="raise-action raise-otp-button"
                 type="button"
-                onClick={generateMembershipCard}
-                disabled={generating}
+                onClick={handleSubmit}
+                disabled={generating || submitting}
               >
-                {generating ? "GENERATING..." : "GENERATE MY MEMBERSHIP CARD"}
+                {submitting
+                  ? "REGISTERING..."
+                  : generating
+                  ? "GENERATING CARD..."
+                  : "REGISTER & GET MY MEMBERSHIP CARD"}
               </button>
 
             </form>

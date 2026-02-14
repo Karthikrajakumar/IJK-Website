@@ -4,6 +4,7 @@ import { Footer } from "../components/Footer";
 import { Container } from "../components/Container";
 import { Box } from "../components/Box";
 import leaderFlag from "../assets/leader-with-flag.png";
+import { submitGrievanceAPI } from "../pages/Api";
 
 export const RaiseIssuePage = () => {
   const [otpVerified, setOtpVerified] = useState(false);
@@ -12,6 +13,20 @@ export const RaiseIssuePage = () => {
   const [mobile, setMobile] = useState("");
   const [otpStatus, setOtpStatus] = useState("idle");
   const [otpError, setOtpError] = useState("");
+
+  // Form fields
+  const [fullName, setFullName] = useState("");
+  const [constituency, setConstituency] = useState("");
+  const [area, setArea] = useState("");
+  const [street, setStreet] = useState("");
+  const [description, setDescription] = useState("");
+  const [evidenceFile, setEvidenceFile] = useState(null);
+
+  // Submission state
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [trackingId, setTrackingId] = useState("");
 
   useEffect(() => {
     if (window.initSendOTP || customElements.get("h-captcha")) {
@@ -79,6 +94,89 @@ export const RaiseIssuePage = () => {
     window.initSendOTP(configuration);
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Validate file size (max 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        setSubmitError("File size must be less than 10MB");
+        event.target.value = "";
+        return;
+      }
+      setEvidenceFile(file);
+      setSubmitError("");
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    
+    // Reset states
+    setSubmitError("");
+    setSubmitSuccess(false);
+
+    // Validation
+    if (!otpVerified) {
+      setSubmitError("Please verify your mobile number with OTP first.");
+      return;
+    }
+
+    if (!fullName || !mobile || !constituency || !area || !street || !category || !description) {
+      setSubmitError("Please fill in all required fields.");
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+
+      // Create FormData object
+      const formData = new FormData();
+      formData.append("fullName", fullName);
+      formData.append("mobileNumber", mobile);
+      formData.append("constituency", constituency);
+      formData.append("area", area);
+      formData.append("street", street);
+      formData.append("category", category === "Other" ? otherIssue : category);
+      formData.append("description", description);
+      formData.append("otp", "true"); // OTP already verified
+
+      // Append file if exists
+      if (evidenceFile) {
+        formData.append("files", evidenceFile);
+      }
+
+      // Submit to backend
+      const response = await submitGrievanceAPI(formData);
+
+      // Success!
+      setSubmitSuccess(true);
+      setTrackingId(response.trackingId);
+      
+      // Reset form
+      setFullName("");
+      setMobile("");
+      setConstituency("");
+      setArea("");
+      setStreet("");
+      setCategory("");
+      setDescription("");
+      setOtherIssue("");
+      setEvidenceFile(null);
+      setOtpVerified(false);
+      setOtpStatus("idle");
+
+      // Clear file input
+      const fileInput = document.querySelector('input[type="file"]');
+      if (fileInput) fileInput.value = "";
+
+    } catch (error) {
+      setSubmitError(error.message || "Failed to submit grievance. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const newLocal = <h1 id="raise-issue-title">Direct Access To Leadership</h1>;
   return (
     <>
       <Navbar />
@@ -86,7 +184,7 @@ export const RaiseIssuePage = () => {
         <section className="raise-hero" aria-labelledby="raise-issue-title">
           <Container className="raise-hero-inner">
             <div className="raise-hero-text">
-              <h1 id="raise-issue-title">Direct Access To Leadership</h1>
+              {newLocal}
               <p>
                 You no longer need to wait in long queues at government offices or rely on
                 unresponsive representatives. The Latchiya Jananayaga Party (LJK) believes in
@@ -109,20 +207,44 @@ export const RaiseIssuePage = () => {
               <h2 id="raise-form-title">The Grievance Form</h2>
               <p>Submit Your Grievance</p>
             </div>
-            <form className="raise-form">
+
+            {/* Success Message */}
+            {submitSuccess && (
+              <div className="raise-success-message">
+                <h3>✓ Grievance Submitted Successfully!</h3>
+                <p>Your tracking ID: <strong>{trackingId}</strong></p>
+                <p>Please save this ID to track your grievance status.</p>
+              </div>
+            )}
+
+            {/* Error Message */}
+            {submitError && (
+              <div className="raise-error-message">
+                <p>⚠ {submitError}</p>
+              </div>
+            )}
+
+            <form className="raise-form" onSubmit={handleSubmit}>
               <div className="raise-group">
                 <h3>Field 1: Personal Details</h3>
                 <label className="raise-field">
-                  <span>Full Name</span>
-                  <input type="text" placeholder="Enter your full name" />
+                  <span>Full Name *</span>
+                  <input
+                    type="text"
+                    placeholder="Enter your full name"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    required
+                  />
                 </label>
                 <label className="raise-field">
-                  <span>Mobile Number</span>
+                  <span>Mobile Number *</span>
                   <input
                     type="tel"
                     placeholder="Enter mobile number"
                     value={mobile}
                     onChange={(event) => setMobile(event.target.value)}
+                    required
                   />
                   <small>Essential for OTP verification</small>
                 </label>
@@ -147,8 +269,13 @@ export const RaiseIssuePage = () => {
               <div className="raise-group">
                 <h3>Field 2: Location Details</h3>
                 <label className="raise-field select compact">
-                  <span>Constituency</span>
-                  <select defaultValue="" disabled={!otpVerified}>
+                  <span>Constituency *</span>
+                  <select
+                    value={constituency}
+                    onChange={(e) => setConstituency(e.target.value)}
+                    disabled={!otpVerified}
+                    required
+                  >
                     <option value="" disabled>
                       Select constituency
                     </option>
@@ -185,19 +312,25 @@ export const RaiseIssuePage = () => {
                   </select>
                 </label>
                 <label className="raise-field">
-                  <span>Area / Ward Name</span>
+                  <span>Area / Ward Name *</span>
                   <input
                     type="text"
                     placeholder="Enter area or ward name"
+                    value={area}
+                    onChange={(e) => setArea(e.target.value)}
                     disabled={!otpVerified}
+                    required
                   />
                 </label>
                 <label className="raise-field">
-                  <span>Street / Landmark</span>
+                  <span>Street / Landmark *</span>
                   <input
                     type="text"
                     placeholder="Enter street or landmark"
+                    value={street}
+                    onChange={(e) => setStreet(e.target.value)}
                     disabled={!otpVerified}
+                    required
                   />
                 </label>
               </div>
@@ -205,61 +338,59 @@ export const RaiseIssuePage = () => {
               <div className="raise-group">
                 <h3>Field 3: The Issue</h3>
                 <label className="raise-field select">
-                  <span>Describe the issue</span>
+                  <span>Issue Category *</span>
                   <input
                     type="text"
                     placeholder="Enter the issue category (e.g. Water Supply, Street Lights, etc.)"
                     value={category}
-                    onChange={(event) => setCategory(event.target.value)}
+                    onChange={(e) => setCategory(e.target.value)}
                     disabled={!otpVerified}
+                    required
                   />
-                  {/* <select
-                    value={category}
-                    onChange={(event) => setCategory(event.target.value)}
-                    disabled={!otpVerified}
-                  >
-                    <option value="">Select category</option>
-                    <option value="Water Supply">Water Supply</option>
-                    <option value="Sanitation/Garbage">Sanitation/Garbage</option>
-                    <option value="Street Lights">Street Lights</option>
-                    <option value="Roads/Potholes">Roads/Potholes</option>
-                    <option value="Housing">Housing</option>
-                    <option value="Pension/Welfare">Pension/Welfare</option>
-                    <option value="Education">Education</option>
-                    <option value="Police/Safety">Police/Safety</option>
-                    <option value="Other">Other</option>
-                  </select> */}
                 </label>
                 {category === "Other" && (
                   <label className="raise-field">
-                    <span>Describe Other Issue</span>
+                    <span>Describe Other Issue *</span>
                     <input
                       type="text"
                       placeholder="Share the issue details"
                       value={otherIssue}
                       onChange={(event) => setOtherIssue(event.target.value)}
                       disabled={!otpVerified}
+                      required
                     />
                   </label>
                 )}
                 <label className="raise-field">
-                  <span>Description</span>
+                  <span>Description *</span>
                   <textarea
                     placeholder="Please describe the issue in detail. How long has it been happening?"
                     rows={4}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                     disabled={!otpVerified}
+                    required
                   />
                 </label>
                 <label className="raise-field">
                   <span>Evidence Upload</span>
-                  <input type="file" disabled={!otpVerified} />
+                  <input
+                    type="file"
+                    onChange={handleFileChange}
+                    disabled={!otpVerified}
+                    accept="image/*,video/*"
+                  />
                   <small>Upload Photo/Video (Max 10MB)</small>
                   <em>A picture is worth a thousand words. Show us the problem.</em>
                 </label>
               </div>
 
-              <button className="raise-submit" type="submit" disabled={!otpVerified}>
-                Submit Grievance
+              <button
+                className="raise-submit"
+                type="submit"
+                disabled={!otpVerified || isSubmitting}
+              >
+                {isSubmitting ? "Submitting..." : "Submit Grievance"}
               </button>
             </form>
           </Container>

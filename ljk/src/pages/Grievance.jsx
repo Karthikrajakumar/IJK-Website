@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { Container } from "../components/Container";
@@ -7,10 +7,6 @@ import { Box } from "../components/Box";
 import grievanceImage from "../assets/grievance-image.png";
 
 export const GrievancePage = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <>
       <Navbar />
