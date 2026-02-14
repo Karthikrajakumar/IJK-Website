@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 
 import { Container } from "./Container";
-import animationGif from "../assets/vid.gif";
+import gifVideo from "../assets/Gif.mp4";
 import { LanguageContext } from "../context/LanguageContext";
 import en from "../locales/en";
 import ta from "../locales/ta";
@@ -33,7 +33,15 @@ export const SelfSufficientSection = () => {
         </div>
 
         <div className="self-gif">
-          <img src={animationGif} alt={self.imageAlt} />
+          <video
+            src={gifVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            aria-label={self.videoAlt || self.imageAlt}
+            className="self-gif-video"
+          />
         </div>
       </Container>
     </section>

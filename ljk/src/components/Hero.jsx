@@ -21,7 +21,7 @@ export const Hero = () => {
     <section id="home" className="hero hero-gif" aria-label={hero.ariaLabel}>
       <video
         className="hero-gif-image"
-        src="https://res.cloudinary.com/dot0wbsfv/video/upload/v1770801231/LJK_GIF_fmxmdv.mp4"
+        src={require("../assets/LJK GIF.mp4")}
         autoPlay
         loop
         muted
