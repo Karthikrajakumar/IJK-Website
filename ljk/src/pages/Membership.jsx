@@ -98,59 +98,96 @@ export const MembershipPage = () => {
   };
 
   // Submit membership to backend
-  const submitMembership = async () => {
-    const errors = validate();
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      const firstErrorKey = Object.keys(errors)[0];
-      const el = document.getElementById(`field-${firstErrorKey}`);
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
-      return null;
-    }
+const submitMembership = async () => {
+  const errors = validate();
 
-    setFormErrors({});
-    setSubmitting(true);
+  console.log("Submitting membership with data:", {
+    name: formData.name,
+    email: formData.email,
+    mobileNumber: mobile,
+    constituency: formData.constituency,
+    district: formData.district || formData.constituency,
+    address: formData.address,
+    age: calcAge(formData.dob),
+    voterId: formData.voterId,
+    gender: formData.gender,
+    boothNumber: formData.boothNumber,
+    commitment: formData.commitment,
+  });
 
+  if (Object.keys(errors).length > 0) {
+    setFormErrors(errors);
+    const firstErrorKey = Object.keys(errors)[0];
+    const el = document.getElementById(`field-${firstErrorKey}`);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+    return null;
+  }
+
+  setFormErrors({});
+  setSubmitting(true);
+
+  try {
+    const url = `${API_BASE_URL}/membership/register`;
+    console.log("API URL:", url);
+    console.log("Calling API:", url);
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: formData.name,
+        email: formData.email,
+        mobileNumber: mobile,
+        constituency: formData.constituency,
+        district: formData.district || formData.constituency,
+        address: formData.address,
+        otp: true,
+        age: parseInt(calcAge(formData.dob)),
+        voterId: formData.voterId,
+        photo: formData.photoPreview, // can set null for testing
+        gender: formData.gender,
+        boothNumber: formData.boothNumber,
+        commitment: formData.commitment,
+        dob: formData.dob,
+      }),
+    });
+
+    console.log("Response status:", response.status);
+
+    // Read raw text first
+    const rawText = await response.text();
+    console.log("Raw response:", rawText);
+
+    // Try parse JSON safely
+    let data = null;
     try {
-      const response = await fetch(`${API_BASE_URL}/membership/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          mobileNumber: mobile,
-          constituency: formData.constituency,
-          district: formData.district || formData.constituency,
-          address: formData.address,
-          otp: true,
-          age: parseInt(calcAge(formData.dob)),
-          voterId: formData.voterId,
-          photo: formData.photoPreview,
-          gender: formData.gender,
-          boothNumber: formData.boothNumber,
-          commitment: formData.commitment,
-          dob: formData.dob,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || membership.submitFailure);
-      }
-
-      // Return membershipId for PDF generation
-      return data.membershipId;
-    } catch (error) {
-      console.error("Membership submission error:", error);
-      alert(error.message || membership.submitFailure);
-      return null;
-    } finally {
-      setSubmitting(false);
+      data = rawText ? JSON.parse(rawText) : null;
+    } catch (e) {
+      console.error("JSON parse failed");
     }
-  };
+
+    console.log("Parsed data:", data);
+
+    if (!response.ok) {
+      throw new Error(data?.message || "Server error");
+    }
+
+    if (!data || !data.membershipId) {
+      throw new Error("membershipId missing in backend response");
+    }
+
+    return data.membershipId;
+  } catch (error) {
+    console.error("Membership submission error:", error);
+    alert(error.message || "Submission failed");
+    return null;
+  } finally {
+    setSubmitting(false);
+  }
+};
+
 
   // Dynamically load jsPDF
   const loadScript = (src) =>
@@ -264,14 +301,10 @@ export const MembershipPage = () => {
 
   // Handle complete submission flow
   const handleSubmit = async () => {
-    // First submit to backend
-    const membershipId = await submitMembership();
-
-    // If successful, generate PDF card
-    if (membershipId) {
-      await generateMembershipCard(membershipId);
-    }
-  };
+  console.log("Submit clicked");
+  const membershipId = await submitMembership();
+  console.log("Received membership ID:", membershipId);
+};
 
   // Helper: field error message
   const FieldError = ({ name }) =>
