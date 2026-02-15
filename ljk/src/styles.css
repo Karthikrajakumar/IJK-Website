@@ -20,6 +20,10 @@ html {
   scroll-behavior: smooth;
 }
 
+html.lang-tamil {
+  font-size: 95%;
+}
+
 body {
   margin: 0;
   font-family: "Poppins", "Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
@@ -97,7 +101,7 @@ main {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 10px;
 }
 
 .section-title {
@@ -107,6 +111,14 @@ main {
   margin: 0 0 12px;
   color: #000000;
   font-weight: 800;
+}
+
+html.lang-tamil .mission .section-title {
+  line-height: 1.16;
+}
+
+html.lang-tamil .self-sufficient .section-title {
+  line-height: 1.16;
 }
 
 .section-lead {
@@ -128,8 +140,54 @@ main {
     width: 221px;
     line-height: 1.1;
   }
+
+  .section.self-sufficient{
+    padding: 24px 14px 2px -24px;
+  }
+  .section-title {
+    font-size: clamp(1.6rem, 4vw + 1rem, 2.4rem);
+     line-height: 1.16;
+
+}
+  html.lang-tamil .mission .section-title {
+    line-height: 1.16;
+    padding-bottom: 15px;
+    
+    
+  }
+
+  html.lang-tamil .self-sufficient .section-title {
+    line-height: 1.16;
+    padding-bottom: 15px;
+    font-size: 25px;
+    
 }
 
+ 
+
+
+.section-lead{
+  height: auto;
+  width: 100%;
+ 
+  align-items: center;
+  color: #000000ba;
+  display: flex;
+  font-family: "Poppins-SemiBold", Helvetica;
+  font-size: 22px;
+  font-weight: 800;
+  
+  letter-spacing: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 15px 10px;
+}
+
+
+}
 
 .accent-red {
   color: #8d1b1f;
@@ -260,14 +318,18 @@ main {
   background: none;
   border: none;
   padding: 6px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
 }
 
 .nav-toggle-bar {
   display: block;
-  width: 24px;
+  width: 18px;
   height: 2px;
   background: var(--navy);
-  margin: 5px 0;
+  margin: 0;
   transition: transform 0.3s ease;
 }
 
@@ -1094,6 +1156,11 @@ padding-bottom: 170px;
     width: 100%;
     height: auto;
     object-fit: contain;
+  }
+
+  .section .card-image,
+  .section .card-image.emblem {
+    margin-top: 20px;
   }
 
   .card-image.emblem {
@@ -2790,6 +2857,43 @@ padding-bottom: 170px;
   }
 
   .nav-menu {
+    position: relative;
+    top: auto;
+    right: auto;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    justify-content: flex-end;
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    pointer-events: auto;
+    transition: none;
+  }
+
+  .nav-menu > a {
+    display: none;
+  }
+
+  .nav-sty {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .nav-toggle,
+  .nav-language {
+    display: inline-flex;
+    align-items: center;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .nav-menu.is-open {
     position: absolute;
     top: 64px;
     right: 4%;
@@ -2800,18 +2904,35 @@ padding-bottom: 170px;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    opacity: 0;
-    transform: translateY(-8px);
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+    animation: nav-menu-pop 180ms ease-out;
   }
 
-  .nav-menu.is-open {
-    opacity: 1;
-    transform: translateY(0);
-    visibility: visible;
-    pointer-events: auto;
+  .nav-menu.is-open > a {
+    display: block;
+  }
+
+  html.lang-tamil .mission .section-lead {
+    line-height: 1.2;
+    margin-top: 10px;
+  }
+
+  html.lang-tamil .mission .section-text p {
+    line-height: 1.6;
+  }
+
+  html.lang-tamil .mission .section-title {
+    margin-bottom: 10px;
+  }
+
+  @keyframes nav-menu-pop {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .hero-content {

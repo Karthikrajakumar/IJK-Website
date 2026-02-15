@@ -105,6 +105,8 @@ export const Navbar = () => {
               onClick={handleToggle}
             >
               <span className="nav-toggle-bar" />
+              <span className="nav-toggle-bar" />
+              <span className="nav-toggle-bar" />
             </button>
 
             {/* LANGUAGE SWITCH */}

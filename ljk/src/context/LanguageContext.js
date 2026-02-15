@@ -15,6 +15,12 @@ export const LanguageProvider = ({ children }) => {
     localStorage.setItem("lang", language);
   }, [language]);
 
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const root = document.documentElement;
+    root.classList.toggle("lang-tamil", language === "Tamil");
+  }, [language]);
+
   const changeLanguage = (nextLanguage) => {
     if (!nextLanguage) return;
     setLanguage(nextLanguage);
