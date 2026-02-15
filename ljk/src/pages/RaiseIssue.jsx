@@ -85,10 +85,12 @@ export const RaiseIssuePage = () => {
 
       // Submit to backend
       const response = await submitGrievanceAPI(formData);
+      console.log("Grievance submitted successfully:", response);
 
       // Success!
       setSubmitSuccess(true);
       setTrackingId(response.trackingId);
+      console.log("Tracking ID:", response.trackingId);
 
       // Reset form
       setFullName("");
@@ -298,6 +300,16 @@ export const RaiseIssuePage = () => {
               >
                 {isSubmitting ? raise.submitButtonLoading : raise.submitButton}
               </button>
+              {submitSuccess && (
+                <p className="raise-inline-success" role="status">
+                  Grievance Submitted Successfully
+                </p>
+              )}
+              {submitError && (
+                <p className="raise-inline-error" role="alert">
+                  failed to fetch
+                </p>
+              )}
             </form>
           </Container>
         </section>
