@@ -2265,7 +2265,7 @@ padding-bottom: 170px;
   font-family: "Poppins", "Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
   font-weight: 900;
   font-size: clamp(2.2rem, 3vw + 1.2rem, 3.2rem);
-  line-height: 1.08;
+  line-height: 1.2;
   text-transform: uppercase;
   color: #ffffff;
   letter-spacing: 0.04em;
