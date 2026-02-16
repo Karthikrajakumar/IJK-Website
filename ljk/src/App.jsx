@@ -6,7 +6,8 @@ import { GrievancePage } from "./pages/Grievance";
 import { RaiseIssuePage } from "./pages/RaiseIssue";
 import { TrackIssuePage } from "./pages/TrackIssue";
 import { MembershipPage } from "./pages/Membership";
-import { ServicesPage } from "./pages/Services";
+import { WelfarismPage } from "./pages/Welfarism";
+import { WelfarismExplorePage } from "./pages/WelfarismExplore";
 
 function App() {
   return (
@@ -19,8 +20,9 @@ function App() {
           <Route path="/grievance/raise-issue" element={<RaiseIssuePage />} />
           <Route path="/grievance/track-issue" element={<TrackIssuePage />} />
           <Route path="/membership" element={<MembershipPage />} />
-          <Route path="/services" element={<ServicesPage />} />
-          <Route path="/news" element={<Navigate to="/services" replace />} />
+          <Route path="/welfarism" element={<WelfarismPage />} />
+          <Route path="/welfarism-explore" element={<WelfarismExplorePage />} />
+          <Route path="/news" element={<Navigate to="/welfarism" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
@@ -29,4 +31,5 @@ function App() {
 }
 
 export default App;
+
 

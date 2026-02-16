@@ -4,7 +4,7 @@ const en = {
     ideology: "Our Ideology",
     grievance: "Grievance",
     membership: "Membership Portal",
-    services: "Services",
+    welfarism: "Welfarism",
   },
 
   hero: {
@@ -184,7 +184,39 @@ const en = {
     pledgeLeaderAlt: "Leader holding the LJK flag",
   },
 
-  servicesPage: {
+  
+  welfarismLanding: {
+    title: "The Cornerstone of LJK Policy:",
+   
+    
+    bullets: [
+      "People's welfare is our goal",
+      "People's welfare is our policy",
+      "People's welfare is our politics",
+    ],
+    lead:
+      "Welfare is not just a service - it is the expression of our commitment to social justice. Our Welfare Wing acts as the \"service arm\" of LJK, taking the party directly to the people through:",
+    focus: [
+      {
+        title: "Continuous Support:",
+        body:
+          "Targeted programs for health, education, and livelihoods for the vulnerable (poor, women, youth, elderly, and disabled).",
+      },
+      {
+        title: "Government Access:",
+        body:
+          "Assisting beneficiaries with awareness, documentation, and follow-ups to ensure they receive their legal rights.",
+      },
+      {
+        title: "Crisis Management:",
+        body:
+          "Establishing local helpdesks for floods, pandemics, or accidents.",
+      },
+    ],
+    button: "Explore",
+  
+  },
+  welfarismPage: {
     title: "LJK Charity & Service",
     subtitle: "Committed to care, service, and social Impact",
     imageMissing: "Image unavailable",
@@ -343,7 +375,7 @@ const en = {
       "Work on social media campaigns.",
       "Run for a party position",
     ],
-    submitDefault: "REGISTER & GET MY MEMBERSHIP CARD",
+    submitDefault: "REGISTER",
     submitRegistering: "REGISTERING...",
     submitGenerating: "GENERATING CARD...",
     otpErrorInvalid: "Enter a valid 10-digit mobile number.",
@@ -363,7 +395,7 @@ const en = {
     validationVoterId: "Voter ID is required.",
     validationCommitment: "Please select a commitment level.",
     alertSuccess:
-      "Membership registered successfully! Your card has been downloaded.",
+      "Thank you for registering for membership with us. Your details have been verified by our backend team. We will update you shortly.",
     alertFailure:
       "Membership registered, but card generation failed. Please contact support.",
     submitFailure: "Failed to register membership. Please try again.",
@@ -371,3 +403,4 @@ const en = {
 };
 
 export default en;
+

@@ -308,6 +308,12 @@ const submitMembership = async () => {
   console.log("Submit clicked");
   const membershipId = await submitMembership();
   console.log("Received membership ID:", membershipId);
+  if (membershipId) {
+    alert(
+      membership.alertSuccess ||
+        "Thank you for registering for membership with us. Your details have been verified by our backend team. We will update you shortly."
+    );
+  }
 };
 
   // Helper: field error message

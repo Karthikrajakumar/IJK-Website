@@ -4,7 +4,7 @@ const ta = {
     ideology: "எங்கள் கொள்கை",
     grievance: "புகார்",
     membership: "உறுப்பினர் நுழைவாயில்",
-    services: "சேவைகள்",
+    welfarism: "நலன்கள்",
   },
 
   hero: {
@@ -185,7 +185,66 @@ const ta = {
     pledgeLeaderAlt: "Leader holding the LJK flag",
   },
 
-  servicesPage: {
+  welfarismIntro: {
+    title: "The Cornerstone of LJK Policy:",
+    bullets: [
+      "Peopleâ€™s welfare is our goal",
+      "Peopleâ€™s welfare is our policy",
+      "Peopleâ€™s welfare is our politics",
+    ],
+    lead:
+      "Welfare is not just a serviceâ€”it is the expression of our commitment to social justice. Our Welfare Wing acts as the \"service arm\" of LJK, taking the party directly to the people through:",
+    focus: [
+      {
+        title: "Continuous Support",
+        body:
+          "Targeted programs for health, education, and livelihoods for the vulnerable (poor, women, youth, elderly, and disabled).",
+      },
+      {
+        title: "Government Access",
+        body:
+          "Assisting beneficiaries with awareness, documentation, and follow-ups to ensure they receive their legal rights.",
+      },
+      {
+        title: "Crisis Management",
+        body:
+          "Establishing local helpdesks for floods, pandemics, or accidents.",
+      },
+    ],
+    button: "Explore",
+  },
+  welfarismLanding: {
+  title: "எல்.ஜே.கே கொள்கையின் அடித்தளம்:",
+   
+    
+    bullets: [
+      "மக்களின் நலனே எங்கள் இலக்கு",
+      "மக்களின் நலனே எங்கள் கொள்கை",
+      "மக்களின் நலனே எங்கள் அரசியல்",
+    ],
+    lead:
+      "நலன்புரிதல் என்பது ஒரு சேவை மட்டுமல்ல — அது சமூக நீதிக்கான எங்கள் உறுதிப்பாட்டின் வெளிப்பாடாகும். எல்.ஜே.கே நலவாரியம் கட்சியை நேரடியாக மக்களிடம் கொண்டு செல்லும் “சேவை கரம்” ஆக செயல்படுகிறது:",
+    focus: [
+      {
+        title: "தொடர்ச்சியான ஆதரவு:",
+        body:
+          "ஏழைகள், பெண்கள், இளைஞர்கள், முதியவர்கள் மற்றும் மாற்றுத்திறனாளிகள் போன்ற பாதிக்கப்பட்டவர்களுக்கு ஆரோக்கியம், கல்வி மற்றும் வாழ்வாதாரத்திற்கான குறிவைத்த திட்டங்கள்.",
+      },
+      {
+        title: "அரசு அணுகல்:",
+        body:
+          "பயனாளர்கள் தங்களின் சட்டப்பூர்வ உரிமைகளைப் பெற விழிப்புணர்வு, ஆவண உதவி மற்றும் தொடர்ந்த கண்காணிப்பு வழங்குதல்.",
+      },
+      {
+        title: "அவசர நிலை மேலாண்மை:",
+        body:
+          "வெள்ளம், தொற்றுநோய் அல்லது விபத்துகள் போன்ற சூழ்நிலைகளில் உள்ளூர் உதவி மையங்களை அமைத்தல்.",
+      },
+    ],
+    button: "Explore",
+
+  },
+  welfarismPage: {
     title: "பொதுமக்கள் சேவை (பொதுத் தொண்டு)",
     subtitle: "வெளிப்படையான  எல்.ஜே.கே. நேரடியாக எங்களிடம் இருந்து  வரும் உண்மை, புதிய அண்மைச் செய்திகள், தேர்தல் பரப்புரை முக்கிய அம்சங்கள், கதைகள்",
     imageMissing: "Image unavailable",
@@ -344,7 +403,7 @@ const ta = {
       "Work on social media campaigns.",
       "Run for a party position",
     ],
-    submitDefault: "REGISTER & GET MY MEMBERSHIP CARD",
+    submitDefault: "REGISTER",
     submitRegistering: "REGISTERING...",
     submitGenerating: "GENERATING CARD...",
     otpErrorInvalid: "Enter a valid 10-digit mobile number.",
@@ -364,7 +423,7 @@ const ta = {
     validationVoterId: "Voter ID is required.",
     validationCommitment: "Please select a commitment level.",
     alertSuccess:
-      "Membership registered successfully! Your card has been downloaded.",
+      "Thank you for registering for membership with us. Your details have been verified by our backend team. We will update you shortly.",
     alertFailure:
       "Membership registered, but card generation failed. Please contact support.",
     submitFailure: "Failed to register membership. Please try again.",

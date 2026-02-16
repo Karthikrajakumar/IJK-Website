@@ -16,7 +16,7 @@ export const Footer = () => {
   const footer = t.footer || {};
 
   return (
-    <footer id="services-footer" className="footer">
+    <footer id="welfarism-footer" className="footer">
       <Container className="footer-frame">
         <h2 className="footer-title">{footer.title}</h2>
         <p className="footer-text">{footer.address}</p>
@@ -71,3 +71,4 @@ export const Footer = () => {
     </footer>
   );
 };
+

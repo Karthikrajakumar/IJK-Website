@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { Container } from "../components/Container";
@@ -35,14 +35,12 @@ const charity22 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801226
 const charity23 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801226/charity23_xdfzil.png";
 const charity24 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801227/charity24_ceflbd.png";
 
-
-
 const translations = {
   English: en,
   Tamil: ta,
 };
 
-const servicesPhotos = [
+const welfarismPhotos = [
   charity1,
   charity2,
   charity3,
@@ -69,70 +67,72 @@ const servicesPhotos = [
   charity24,
 ];
 
-const ServicesImage = ({ src, className, alt, missingText }) => {
+const WelfarismImage = ({ src, className, alt, missingText }) => {
   const handleError = (event) => {
     event.currentTarget.style.display = "none";
     event.currentTarget.nextElementSibling.style.display = "flex";
   };
 
   return (
-    <div className={`services-image-frame ${className}`}>
+    <div className={`welfarism-image-frame ${className}`}>
       <img src={src} alt={alt} onError={handleError} />
-      <div className="services-image-missing">
+      <div className="welfarism-image-missing">
         <span>{missingText}</span>
       </div>
     </div>
   );
 };
 
-export const ServicesPage = () => {
+export const WelfarismExplorePage = () => {
   const { language } = useContext(LanguageContext);
   const t = translations[language] || translations.English;
-  const services = t.servicesPage || {};
-  const servicesStories = services.stories || [];
-
+  const welfarism = t.welfarismPage || {};
+  const welfarismStories = welfarism.stories || [];
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
   return (
     <>
       <Navbar />
-      <main className="services-page">
-        <section className="services-hero" aria-labelledby="services-title">
-          <Container className="services-hero-inner">
-            <div className="services-hero-copy">
-              <h1 id="services-title">{services.title}</h1>
-              <p>{services.subtitle}</p>
+      <main className="welfarism-page">
+        <section className="welfarism-hero welfarism-explore-hero" aria-labelledby="welfarism-title">
+          <Container className="welfarism-hero-inner">
+            <div className="welfarism-explore-hero-copy">
+              <h1 id="welfarism-title">{welfarism.title}</h1>
+              <p>{welfarism.subtitle}</p>
             </div>
-            <div className="services-hero-art" aria-hidden="true">
-              <img src={leaderImage} alt="" className="services-hero-leader" />
+            <div className="welfarism-hero-art" aria-hidden="true">
+              <img src={leaderImage} alt="" className="welfarism-hero-leader" />
             </div>
           </Container>
         </section>
 
-        <section className="services-feed" aria-label="LJK Services">
-          <Container className="services-feed-inner">
-            {servicesStories.map((story, index) => (
-              <article className="services-story" key={`${story.title}-${index}`}>
-                <h2 className="services-story-title">{story.title}</h2>
+        <section className="welfarism-feed" aria-label="LJK Welfarism">
+          <Container className="welfarism-feed-inner">
+            {welfarismStories.map((story, index) => (
+              <article className="welfarism-story" key={`${story.title}-${index}`}>
+                <h2 className="welfarism-story-title">{story.title}</h2>
 
-                <div className="services-featured-single">
-                  <ServicesImage
-                    src={servicesPhotos[index * 3]}
+                <div className="welfarism-featured-single">
+                  <WelfarismImage
+                    src={welfarismPhotos[index * 3]}
                     alt={story.title}
-                    missingText={services.imageMissing}
+                    missingText={welfarism.imageMissing}
                   />
                 </div>
 
-                <p className="services-story-body">{story.body}</p>
+                <p className="welfarism-story-body">{story.body}</p>
 
-                <div className="services-gallery-grid">
-                  <ServicesImage
-                    src={servicesPhotos[index * 3 + 1]}
+                <div className="welfarism-gallery-grid">
+                  <WelfarismImage
+                    src={welfarismPhotos[index * 3 + 1]}
                     alt={`${story.title} gallery one`}
-                    missingText={services.imageMissing}
+                    missingText={welfarism.imageMissing}
                   />
-                  <ServicesImage
-                    src={servicesPhotos[index * 3 + 2]}
+                  <WelfarismImage
+                    src={welfarismPhotos[index * 3 + 2]}
                     alt={`${story.title} gallery two`}
-                    missingText={services.imageMissing}
+                    missingText={welfarism.imageMissing}
                   />
                 </div>
               </article>

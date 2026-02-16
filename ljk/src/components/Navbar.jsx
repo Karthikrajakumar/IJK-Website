@@ -90,7 +90,7 @@ export const Navbar = () => {
           <NavLink to="/ideology" onClick={handleClose}>{navText.ideology}</NavLink>
           <NavLink to="/grievance" onClick={handleClose}>{navText.grievance}</NavLink>
           <NavLink to="/membership" onClick={handleClose}>{navText.membership}</NavLink>
-          <NavLink to="/services" onClick={handleClose}>{navText.services}</NavLink>
+          <NavLink to="/welfarism" onClick={handleClose}>{navText.welfarism}</NavLink>
 
           <div
             className="nav-sty"
@@ -134,3 +134,4 @@ export const Navbar = () => {
     </header>
   );
 };
+
