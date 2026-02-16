@@ -204,100 +204,100 @@ const submitMembership = async () => {
     });
 
   // Generate PDF membership card
-  const generateMembershipCard = async (membershipId) => {
-    setGenerating(true);
+  // const generateMembershipCard = async (membershipId) => {
+  //   setGenerating(true);
 
-    try {
-      await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
+  //   try {
+  //     await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
 
-      const CW = 1400;
-      const CH = 900;
-      const canvas = document.createElement("canvas");
-      canvas.width = CW;
-      canvas.height = CH;
-      const ctx = canvas.getContext("2d");
+  //     const CW = 1400;
+  //     const CH = 900;
+  //     const canvas = document.createElement("canvas");
+  //     canvas.width = CW;
+  //     canvas.height = CH;
+  //     const ctx = canvas.getContext("2d");
 
-      // 1. Draw card template background
-      await new Promise((resolve, reject) => {
-        const bg = new Image();
-        bg.src = cardTemplate;
-        bg.onload = () => {
-          ctx.drawImage(bg, 0, 0, CW, CH);
-          resolve();
-        };
-        bg.onerror = reject;
-      });
+  //     // 1. Draw card template background
+  //     await new Promise((resolve, reject) => {
+  //       const bg = new Image();
+  //       bg.src = cardTemplate;
+  //       bg.onload = () => {
+  //         ctx.drawImage(bg, 0, 0, CW, CH);
+  //         resolve();
+  //       };
+  //       bg.onerror = reject;
+  //     });
 
-      // 2. Draw member photo into the black box
-      const PHOTO_X = 90;
-      const PHOTO_Y = 270;
-      const PHOTO_W = 235;
-      const PHOTO_H = 325;
+  //     // 2. Draw member photo into the black box
+  //     const PHOTO_X = 90;
+  //     const PHOTO_Y = 270;
+  //     const PHOTO_W = 235;
+  //     const PHOTO_H = 325;
 
-      if (formData.photoPreview) {
-        await new Promise((resolve) => {
-          const img = new Image();
-          img.src = formData.photoPreview;
-          img.onload = () => {
-            ctx.save();
-            ctx.beginPath();
-            ctx.rect(PHOTO_X, PHOTO_Y, PHOTO_W, PHOTO_H);
-            ctx.clip();
-            const scale = Math.max(PHOTO_W / img.width, PHOTO_H / img.height);
-            const dw = img.width * scale;
-            const dh = img.height * scale;
-            ctx.drawImage(
-              img,
-              PHOTO_X + (PHOTO_W - dw) / 2,
-              PHOTO_Y + (PHOTO_H - dh) / 2,
-              dw,
-              dh
-            );
-            ctx.restore();
-            resolve();
-          };
-        });
-      }
+  //     if (formData.photoPreview) {
+  //       await new Promise((resolve) => {
+  //         const img = new Image();
+  //         img.src = formData.photoPreview;
+  //         img.onload = () => {
+  //           ctx.save();
+  //           ctx.beginPath();
+  //           ctx.rect(PHOTO_X, PHOTO_Y, PHOTO_W, PHOTO_H);
+  //           ctx.clip();
+  //           const scale = Math.max(PHOTO_W / img.width, PHOTO_H / img.height);
+  //           const dw = img.width * scale;
+  //           const dh = img.height * scale;
+  //           ctx.drawImage(
+  //             img,
+  //             PHOTO_X + (PHOTO_W - dw) / 2,
+  //             PHOTO_Y + (PHOTO_H - dh) / 2,
+  //             dw,
+  //             dh
+  //           );
+  //           ctx.restore();
+  //           resolve();
+  //         };
+  //       });
+  //     }
 
-      // 3. Write values after the colons
-      ctx.font = "bold 34px Arial";
-      ctx.fillStyle = "#0d2f6e";
+  //     // 3. Write values after the colons
+  //     ctx.font = "bold 34px Arial";
+  //     ctx.fillStyle = "#0d2f6e";
 
-      const VALUE_X = 660;
-      const fields = [
-        { value: formData.name, y: 350 },
-        { value: formData.constituency, y: 424 },
-        { value: formData.boothNumber, y: 488 },
-        { value: calcAge(formData.dob), y: 555 },
-        {
-          value: formData.gender.charAt(0).toUpperCase() + formData.gender.slice(1),
-          y: 607,
-        },
-      ];
+  //     const VALUE_X = 660;
+  //     const fields = [
+  //       { value: formData.name, y: 350 },
+  //       { value: formData.constituency, y: 424 },
+  //       { value: formData.boothNumber, y: 488 },
+  //       { value: calcAge(formData.dob), y: 555 },
+  //       {
+  //         value: formData.gender.charAt(0).toUpperCase() + formData.gender.slice(1),
+  //         y: 607,
+  //       },
+  //     ];
 
-      fields.forEach(({ value, y }) => ctx.fillText(value, VALUE_X, y));
+  //     fields.forEach(({ value, y }) => ctx.fillText(value, VALUE_X, y));
 
-      // Add membership ID to the card if you want
-      if (membershipId) {
-        ctx.font = "bold 28px Arial";
-        ctx.fillText(`ID: ${membershipId}`, VALUE_X, 680);
-      }
+  //     // Add membership ID to the card if you want
+  //     if (membershipId) {
+  //       ctx.font = "bold 28px Arial";
+  //       ctx.fillText(`ID: ${membershipId}`, VALUE_X, 680);
+  //     }
 
-      // 4. Export as PDF and trigger download
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: "a5" });
-      const imgData = canvas.toDataURL("image/jpeg", 1.0);
-      pdf.addImage(imgData, "JPEG", 0, 0, 210, 148);
-      pdf.save(`LJK_Membership_${formData.name}_${membershipId || ""}.pdf`);
+  //     // 4. Export as PDF and trigger download
+  //     const { jsPDF } = window.jspdf;
+  //     const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: "a5" });
+  //     const imgData = canvas.toDataURL("image/jpeg", 1.0);
+  //     pdf.addImage(imgData, "JPEG", 0, 0, 210, 148);
+  //     pdf.save(`LJK_Membership_${formData.name}_${membershipId || ""}.pdf`);
 
-      alert(membership.alertSuccess);
-    } catch (err) {
-      console.error("Card generation failed:", err);
-      alert(membership.alertFailure);
-    } finally {
-      setGenerating(false);
-    }
-  };
+  //     alert(membership.alertSuccess);
+  //   } catch (err) {
+  //     console.error("Card generation failed:", err);
+  //     alert(membership.alertFailure);
+  //   } finally {
+  //     setGenerating(false);
+  //   }
+  // };
 
   // Handle complete submission flow
   const handleSubmit = async () => {
