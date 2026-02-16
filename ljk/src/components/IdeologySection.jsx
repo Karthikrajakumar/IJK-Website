@@ -4,14 +4,17 @@ import { Box } from "./Box";
 import { LanguageContext } from "../context/LanguageContext";
 import en from "../locales/en";
 import ta from "../locales/ta";
-import scheme1 from "../assets/SCHEM 1.png";
-import scheme2 from "../assets/SCHEM 2.png";
-import scheme3 from "../assets/SCHEM 3.png";
-import scheme4 from "../assets/SCHEM 4.png";
-import scheme5 from "../assets/SCHEM 5.png";
-import scheme6 from "../assets/SCHEM 6.png";
-import lionPic from "../assets/lion-pic.png";
-import leaderWithFlag from "../assets/leader-with-flag.png";
+const scheme1 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801231/SCHEM_1_jl8as9.png";
+const scheme2 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801231/SCHEM_2_vs13z9.png";
+const scheme3 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801236/SCHEM_3_d5c1b4.png";
+const scheme4 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801232/SCHEM_4_qdoqft.png";
+const scheme5 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801232/SCHEM_5_q9kdwk.png";
+const scheme6 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801232/SCHEM_6_qjemcq.png";
+
+const lionPic = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801229/lion-pic_o8n3kr.png";
+
+
+
 
 const translations = {
   English: en,
@@ -171,9 +174,7 @@ export const IdeologySection = () => {
               <div className="leader-pledge-lion">
                 <img src={lionPic} alt={ideology.pledgeLionAlt} loading="lazy" />
               </div>
-              <div className="leader-pledge-image">
-                <img src={leaderWithFlag} alt={ideology.pledgeLeaderAlt} loading="lazy" />
-              </div>
+              
             </div>
           </div>
         </Container>

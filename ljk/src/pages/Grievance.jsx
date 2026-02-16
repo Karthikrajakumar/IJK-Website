@@ -4,10 +4,14 @@ import { Footer } from "../components/Footer";
 import { Container } from "../components/Container";
 import { NavLink } from "react-router-dom";
 import { Box } from "../components/Box";
-import grievanceImage from "../assets/grievance-image.png";
+
 import { LanguageContext } from "../context/LanguageContext";
 import en from "../locales/en";
 import ta from "../locales/ta";
+
+const grievanceImage = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801227/grievance-image_pkrm9u.png";
+
+
 
 const translations = {
   English: en,

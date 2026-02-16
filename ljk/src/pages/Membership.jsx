@@ -3,11 +3,15 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { Container } from "../components/Container";
 import { Box } from "../components/Box";
-import leaderPortrait from "../assets/group5.png";
+
+
 // import cardTemplate from "../assets/membership.jpg";
 import { LanguageContext } from "../context/LanguageContext";
 import en from "../locales/en";
 import ta from "../locales/ta";
+
+const leaderPortrait = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1771225784/group5_puelbi.png";
+
 
 const translations = {
   English: en,

@@ -3,34 +3,39 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { Container } from "../components/Container";
 import { Box } from "../components/Box";
-import leaderImage from "../assets/leader2.png";
-import charity1 from "../assets/charity1.png";
-import charity2 from "../assets/charity2.png";
-import charity3 from "../assets/charity3.png";
-import charity4 from "../assets/charity4.png";
-import charity5 from "../assets/charity5.png";
-import charity6 from "../assets/charity6.png";
-import charity7 from "../assets/charity7.png";
-import charity8 from "../assets/charity8.png";
-import charity9 from "../assets/charity9.png";
-import charity10 from "../assets/charity10.png";
-import charity11 from "../assets/charity11.png";
-import charity12 from "../assets/charity12.png";
-import charity13 from "../assets/charity13.png";
-import charity14 from "../assets/charity14.png";
-import charity15 from "../assets/charity15.png";
-import charity16 from "../assets/charity16.png";
-import charity17 from "../assets/charity17.png";
-import charity18 from "../assets/charity18.png";
-import charity19 from "../assets/charity19.png";
-import charity20 from "../assets/charity20.png";
-import charity21 from "../assets/charity21.png";
-import charity22 from "../assets/charity22.png";
-import charity23 from "../assets/charity23.png";
-import charity24 from "../assets/charity24.png";
+
 import { LanguageContext } from "../context/LanguageContext";
 import en from "../locales/en";
 import ta from "../locales/ta";
+
+const leaderImage = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801228/leader2_nnvkg0.png";
+
+const charity1 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801221/charity1_juk0sb.png";
+const charity2 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801224/charity2_oyelru.png";
+const charity3 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801221/charity3_zwcgdm.png";
+const charity4 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801221/charity4_nt8asv.png";
+const charity5 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801221/charity5_prins8.png";
+const charity6 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801222/charity6_kprdpd.png";
+const charity7 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801222/charity7_izucbg.png ";
+const charity8 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801222/charity8_ojvyjn.png";
+const charity9 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801222/charity9_umjwzu.png";
+const charity10 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801222/charity10_xfw8rb.png";
+const charity11 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801223/charity11_epgnj4.png";
+const charity12 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801223/charity12_s8xtax.png";
+const charity13 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801224/charity13_mvk2ky.png";
+const charity14 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801224/charity14_irad9f.png";
+const charity15 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801223/charity15_u0amil.png";
+const charity16 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801224/charity16_qswdos.png";
+const charity17 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801224/charity17_x2f7bf.png";
+const charity18 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801224/charity18_v3harr.png";
+const charity19 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801225/charity19_wslj7x.png";
+const charity20 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801230/charity20_lobzqs.png";
+const charity21 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801226/charity21_cbmvnm.png";
+const charity22 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801226/charity22_x3kafh.png";
+const charity23 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801226/charity23_xdfzil.png";
+const charity24 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801227/charity24_ceflbd.png";
+
+
 
 const translations = {
   English: en,

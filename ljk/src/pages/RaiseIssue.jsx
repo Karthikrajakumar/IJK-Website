@@ -3,11 +3,15 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { Container } from "../components/Container";
 import { Box } from "../components/Box";
-import leaderFlag from "../assets/leader-with-flag.png";
+
 import { submitGrievanceAPI } from "../pages/Api";
 import { LanguageContext } from "../context/LanguageContext";
 import en from "../locales/en";
 import ta from "../locales/ta";
+
+const leaderFlag = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801229/leader-with-flag_vw75ol.png";
+
+
 
 const translations = {
   English: en,
