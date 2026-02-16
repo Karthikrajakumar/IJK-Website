@@ -1248,10 +1248,10 @@ padding-bottom: 170px;
   }
 
   .leader-pledge-image img {
-    transform: translateY(-12px);
+    transform: translateY(0px);
   }
   .leader-pledge-lion img {
-    transform: translateY(-12px);
+    transform: translateY(0px);
   }
 
 
