@@ -4,7 +4,7 @@ import { Footer } from "../components/Footer";
 import { Container } from "../components/Container";
 import { Box } from "../components/Box";
 import leaderPortrait from "../assets/group5.png";
-import cardTemplate from "../assets/membership.jpg";
+// import cardTemplate from "../assets/membership.jpg";
 import { LanguageContext } from "../context/LanguageContext";
 import en from "../locales/en";
 import ta from "../locales/ta";
@@ -20,7 +20,7 @@ export const MembershipPage = () => {
   const membership = t.membershipPage || {};
 
   const [mobile, setMobile] = useState("");
-  const [generating, setGenerating] = useState(false);
+  // const [generating, setGenerating] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
@@ -190,18 +190,18 @@ const submitMembership = async () => {
 
 
   // Dynamically load jsPDF
-  const loadScript = (src) =>
-    new Promise((resolve, reject) => {
-      if (document.querySelector(`script[src="${src}"]`)) {
-        resolve();
-        return;
-      }
-      const s = document.createElement("script");
-      s.src = src;
-      s.onload = resolve;
-      s.onerror = reject;
-      document.head.appendChild(s);
-    });
+  // const loadScript = (src) =>
+  //   new Promise((resolve, reject) => {
+  //     if (document.querySelector(`script[src="${src}"]`)) {
+  //       resolve();
+  //       return;
+  //     }
+  //     const s = document.createElement("script");
+  //     s.src = src;
+  //     s.onload = resolve;
+  //     s.onerror = reject;
+  //     document.head.appendChild(s);
+  //   });
 
   // Generate PDF membership card
   // const generateMembershipCard = async (membershipId) => {
@@ -616,12 +616,10 @@ const submitMembership = async () => {
                 className="raise-action raise-otp-button"
                 type="button"
                 onClick={handleSubmit}
-                disabled={generating || submitting}
+                disabled={submitting}
               >
                 {submitting
                   ? membership.submitRegistering
-                  : generating
-                  ? membership.submitGenerating
                   : membership.submitDefault}
               </button>
             </form>
