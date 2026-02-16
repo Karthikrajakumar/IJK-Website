@@ -1532,12 +1532,12 @@ padding-bottom: 170px;
 
   .services-hero-copy h1 {
     font-size: clamp(1.8rem, 4vw + 1rem, 2.5rem);
-    padding-left: 50px;
+    padding-left: 35px;
     
   }
   .services-hero-copy p {
     max-width: 350px;
-    padding-left: 55px;
+    padding-left: 35px;
     
   }
 
