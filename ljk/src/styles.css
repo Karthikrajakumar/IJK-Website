@@ -256,6 +256,12 @@ html.lang-tamil .self-sufficient .section-title {
   width: 100%; /* Ensure the navbar spans the full width of the viewport */
  /* Optional: Set a maximum width for larger screens */
   margin: 0 auto; /* Center the navbar horizontally */
+  transition: transform 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+  will-change: transform;
+}
+
+.navbar.is-hidden {
+  transform: translateY(-110%);
 }
 
 .nav-inner {
@@ -1576,7 +1582,7 @@ font-weight: 800;
   width: min(480px, 92%);
   height: auto;
   display: block;
-  transform: translateY(40px);
+  transform: translateY(120px);
 }
 
 .welfarism-feed {

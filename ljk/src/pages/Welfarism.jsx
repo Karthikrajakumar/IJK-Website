@@ -4,11 +4,13 @@ import { Footer } from "../components/Footer";
 import { Container } from "../components/Container";
 import { Box } from "../components/Box";
 import { Link } from "react-router-dom";
-import grp5 from "../assets/grp5.png";
+
 
 import { LanguageContext } from "../context/LanguageContext";
 import en from "../locales/en";
 import ta from "../locales/ta";
+
+const grp5 = "https://res.cloudinary.com/dot0wbsfv/image/upload/v1770801228/grp5_n2ptp0.png";
 
 const translations = {
   English: en,

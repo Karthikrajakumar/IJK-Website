@@ -16,11 +16,14 @@ const translations = {
 /* ---------------- COMPONENT ---------------- */
 export const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
   const { language, changeLanguage } = useContext(LanguageContext);
   const t = translations[language] || translations.English;
   const navText = t.navbar || {};
 
   const navRef = useRef(null);
+  const lastScrollY = useRef(0);
+  const scrollTicking = useRef(false);
 
   const handleToggle = () => setOpen(prev => !prev);
   const handleClose = () => setOpen(false);
@@ -53,8 +56,36 @@ export const Navbar = () => {
     };
   }, [open]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (scrollTicking.current) return;
+      scrollTicking.current = true;
+
+      window.requestAnimationFrame(() => {
+        const currentY = window.scrollY || 0;
+        const delta = currentY - lastScrollY.current;
+
+        if (open) {
+          setIsHidden(false);
+        } else if (Math.abs(delta) > 6) {
+          setIsHidden(delta > 0 && currentY > 64);
+        }
+
+        lastScrollY.current = currentY;
+        scrollTicking.current = false;
+      });
+    };
+
+    lastScrollY.current = window.scrollY || 0;
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [open]);
+
   return (
-    <header className="navbar" ref={navRef}>
+    <header className={`navbar ${isHidden ? "is-hidden" : ""}`} ref={navRef}>
       <Container
         className="nav-inner"
         style={{
