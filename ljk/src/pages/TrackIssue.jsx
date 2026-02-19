@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+import axios from "axios";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { Container } from "../components/Container";
@@ -18,13 +19,22 @@ export const TrackIssuePage = () => {
   const track = t.trackIssuePage || {};
 
   const statuses = track.statuses || [];
+
   const [showStatus, setShowStatus] = useState(false);
   const [grievanceId, setGrievanceId] = useState("");
   const [trackError, setTrackError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [grievanceData, setGrievanceData] = useState(null);
+
   const statusRef = useRef(null);
-  const currentIndex = 1;
-  const lineProgress = (currentIndex / (statuses.length - 1)) * 80;
+
   const issuePattern = /^issue-\d{6}$/i;
+
+  const lineProgress =
+    statuses.length > 1
+      ? (currentIndex / (statuses.length - 1)) * 80
+      : 0;
 
   useEffect(() => {
     if (!showStatus || !statusRef.current) return;
@@ -33,42 +43,90 @@ export const TrackIssuePage = () => {
     statusRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [showStatus]);
 
-  const handleTrack = () => {
+  const handleTrack = async () => {
     const trimmed = grievanceId.trim();
+
     if (!issuePattern.test(trimmed)) {
       setShowStatus(false);
-      setTrackError(track.errorInvalidId);
+      setTrackError(track.errorInvalidId || "Invalid Tracking ID");
       return;
     }
-    setTrackError("");
-    setShowStatus(true);
+
+    try {
+      setLoading(true);
+      setTrackError("");
+      setShowStatus(false);
+
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/grievances/track/${trimmed}`
+      );
+
+      if (response.data.success) {
+        const grievance = response.data.grievance;
+
+        setGrievanceData(grievance);
+
+        // Dynamic Status Update
+        const statusIndex = statuses.indexOf(grievance.status);
+        if (statusIndex !== -1) {
+          setCurrentIndex(statusIndex);
+        } else {
+          setCurrentIndex(0);
+        }
+
+        setShowStatus(true);
+      }
+    } catch (error) {
+      console.error("Track Error:", error);
+
+      if (error.response?.status === 404) {
+        setTrackError("Grievance not found");
+      } else {
+        setTrackError("Something went wrong. Please try again.");
+      }
+
+      setShowStatus(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
       <Navbar />
       <main className="track-issue-page">
-        {showStatus && (
-          <section className="track-status-section" aria-live="polite" ref={statusRef}>
+
+        {/* STATUS SECTION */}
+        {showStatus && grievanceData && (
+          <section
+            className="track-status-section"
+            aria-live="polite"
+            ref={statusRef}
+          >
             <Container>
               <div className="track-status-card">
                 <div className="track-status-header">
-                  <p className="track-status-title">{track.trackingIdLabel}</p>
-                  <p className="track-status-id">{grievanceId || track.fieldPlaceholder}</p>
+                  <p className="track-status-title">
+                    {track.trackingIdLabel || "Tracking ID"}
+                  </p>
+                  <p className="track-status-id">
+                    {grievanceData.trackingId}
+                  </p>
                   <p className="track-status-current">
-                    {track.currentStatusLabel} <strong>{statuses[currentIndex]}</strong>
+                    {track.currentStatusLabel || "Current Status:"}{" "}
+                    <strong>{grievanceData.status}</strong>
                   </p>
                 </div>
+
                 <div
                   className="track-status-timeline"
                   role="list"
-                  style={{
-                    "--progress": `${lineProgress}%`,
-                  }}
+                  style={{ "--progress": `${lineProgress}%` }}
                 >
                   {statuses.map((status, index) => {
                     const isComplete = index < currentIndex;
                     const isActive = index === currentIndex;
+
                     return (
                       <div
                         key={status}
@@ -77,16 +135,26 @@ export const TrackIssuePage = () => {
                         } ${isActive ? "is-active" : ""}`}
                         role="listitem"
                       >
-                        <span className="track-status-dot" aria-hidden="true" />
-                        <span className="track-status-label">{status}</span>
+                        <span className="track-status-dot" />
+                        <span className="track-status-label">
+                          {status}
+                        </span>
                       </div>
                     );
                   })}
+                </div>
+
+                {/* Additional Details */}
+                <div className="track-extra-details">
+                  <p><strong>Description:</strong> {grievanceData.description}</p>
+                  <p><strong>Created At:</strong> {grievanceData.createdAt}</p>
                 </div>
               </div>
             </Container>
           </section>
         )}
+
+        {/* HERO SECTION */}
         <section className="track-hero" aria-labelledby="track-issue-title">
           <Container className="track-hero-inner">
             <div className="track-hero-copy">
@@ -94,32 +162,47 @@ export const TrackIssuePage = () => {
               <h1 id="track-issue-title">{track.heroTitle}</h1>
               <p className="track-hero-subtitle">{track.heroSubtitle}</p>
             </div>
-            <aside className="track-widget" aria-label="Track your issue">
-              <span className="track-widget-label">{track.widgetLabel}</span>
-              <h3 className="track-widget-title">{track.widgetTitle}</h3>
+
+            <aside className="track-widget">
+              <span className="track-widget-label">
+                {track.widgetLabel}
+              </span>
+              <h3 className="track-widget-title">
+                {track.widgetTitle}
+              </h3>
+
               <label className="track-field">
-                <span>{track.fieldLabel}</span>
+                <span>{track.fieldLabel || "Enter Tracking ID"}</span>
                 <input
                   className="track-input"
                   type="text"
-                  placeholder={track.fieldPlaceholder}
-                  inputMode="text"
+                  placeholder="issue-123456"
                   value={grievanceId}
-                  onChange={(event) => {
-                    setGrievanceId(event.target.value);
+                  onChange={(e) => {
+                    setGrievanceId(e.target.value);
                     setShowStatus(false);
                     setTrackError("");
                   }}
                 />
               </label>
-              {trackError && <p className="track-error">{trackError}</p>}
-              <button className="track-button" type="button" onClick={handleTrack}>
-                {track.trackButton}
+
+              {trackError && (
+                <p className="track-error">{trackError}</p>
+              )}
+
+              <button
+                className="track-button"
+                type="button"
+                onClick={handleTrack}
+                disabled={loading}
+              >
+                {loading ? "Tracking..." : track.trackButton || "Track Issue"}
               </button>
             </aside>
           </Container>
         </section>
 
+        {/* QUOTE SECTION */}
         <section className="track-quote">
           <Container>
             <blockquote>{track.quote}</blockquote>
