@@ -1,10 +1,10 @@
 const en = {
   navbar: {
     home: "Home",
-    ideology: "Our Ideology",
+    ideology: "Our Ideological Leaders",
     grievance: "Grievance",
     membership: "Membership Portal",
-    welfarism: "Welfarism",
+    welfarism: "Welfarism - Our Ideology",
   },
 
   hero: {

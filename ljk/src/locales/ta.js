@@ -1,10 +1,10 @@
 const ta = {
   navbar: {
     home: "முகப்பு",
-    ideology: "எங்கள் கொள்கை",
+    ideology: "நம் கொள்கைத் தலைவர்கள்",
     grievance: "புகார்",
     membership: "உறுப்பினர் நுழைவாயில்",
-    welfarism: "நலன்கள்",
+    welfarism: "மக்கள் நலன் - கொள்கை",
   },
 
   hero: {
