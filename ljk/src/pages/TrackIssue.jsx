@@ -58,7 +58,7 @@ export const TrackIssuePage = () => {
       setShowStatus(false);
 
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/grievances/track/${trimmed}`
+        `${process.env.REACT_APP_API_URL}/grievances/track/${trimmed}`
       );
 
       if (response.data.success) {
